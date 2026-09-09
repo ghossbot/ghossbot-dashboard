@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GhossBot Dashboard</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">G</div>
+
+            <div>
+                <h1>GhossBot</h1>
+                <span>Dashboard</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <button class="menu active">
+                🏠
+                <span>Inicio</span>
+            </button>
+
+            <button class="menu">
+                ⚙️
+                <span>Configuración</span>
+            </button>
+
+            <button class="menu">
+                👋
+                <span>Bienvenida</span>
+            </button>
+
+            <button class="menu">
+                🛡️
+                <span>Moderación</span>
+            </button>
+
+            <button class="menu">
+                💬
+                <span>Quotes</span>
+            </button>
+
+            <button class="menu">
+                📜
+                <span>Logs</span>
+            </button>
+
+        </nav>
+
+    </aside>
+
+
+    <main>
+
+        <header>
+
+            <div>
+                <h2>Dashboard</h2>
+
+                <p>
+                    Panel de control de GhossBot
+                </p>
+            </div>
+
+            <button id="loginButton">
+                Iniciar sesión con Discord
+            </button>
+
+        </header>
+
+
+        <section class="cards">
+
+            <div class="card">
+
+                <span>Estado del bot</span>
+
+                <strong class="online">
+                    ● Online
+                </strong>
+
+            </div>
+
+
+            <div class="card">
+
+                <span>Servidores</span>
+
+                <strong>
+                    1
+                </strong>
+
+            </div>
+
+
+            <div class="card">
+
+                <span>Versión</span>
+
+                <strong>
+                    1.0.0
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h3>
+                ⚙️ Configuración rápida
+            </h3>
+
+
+            <div class="setting">
+
+                <div>
+
+                    <strong>
+                        💬 Sistema de Quotes
+                    </strong>
+
+                    <p>
+                        Activar o desactivar el sistema de Quotes.
+                    </p>
+
+                </div>
+
+                <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="setting">
+
+                <div>
+
+                    <strong>
+                        👋 Bienvenida
+                    </strong>
+
+                    <p>
+                        Mensajes automáticos cuando entra un usuario.
+                    </p>
+
+                </div>
+
+                <button class="switch"></button>
+
+            </div>
+
+
+            <div class="setting">
+
+                <div>
+
+                    <strong>
+                        🛡️ Moderación
+                    </strong>
+
+                    <p>
+                        Funciones de moderación del servidor.
+                    </p>
+
+                </div>
+
+                <button class="switch"></button>
+
+            </div>
+
+
+            <button class="save">
+                Guardar configuración
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <script src="/script.js"></script>
+
+</body>
+</html>
