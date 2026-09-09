@@ -1,12 +1,13 @@
 {
   "name": "ghossbot-dashboard",
   "version": "1.0.0",
-  "description": "Dashboard oficial de GhossBot",
+  "description": "Dashboard de GhossBot",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "express-session": "^1.18.2"
   }
 }
