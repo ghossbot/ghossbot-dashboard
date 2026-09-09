@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>GhossBot Dashboard</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                G
+            </div>
+
+            <div>
+                <h1>GhossBot</h1>
+                <span>Dashboard</span>
+            </div>
+
+        </div>
+
+        <nav>
+
+            <button class="menu active">
+                🏠 <span>Inicio</span>
+            </button>
+
+            <button class="menu">
+                ⚙️ <span>Configuración</span>
+            </button>
+
+            <button class="menu">
+                👋 <span>Bienvenida</span>
+            </button>
+
+            <button class="menu">
+                🛡️ <span>Moderación</span>
+            </button>
+
+            <button class="menu">
+                💬 <span>Quotes</span>
+            </button>
+
+            <button class="menu">
+                📜 <span>Logs</span>
+            </button>
+
+        </nav>
+
+    </aside>
+
+
+    <main>
+
+        <header>
+
+            <div>
+
+                <h2>Dashboard</h2>
+
+                <p id="userText">
+                    Cargando usuario...
+                </p>
+
+            </div>
+
+            <a
+                class="logout"
+                href="/auth/logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </header>
+
+
+        <section class="panel">
+
+            <h3>
+                🏠 Seleccioná tu servidor
+            </h3>
+
+            <div id="guilds">
+                Cargando servidores...
+            </div>
+
+        </section>
+
+
+        <section class="cards">
+
+            <div class="card">
+
+                <span>Estado del bot</span>
+
+                <strong class="online">
+                    ● Online
+                </strong>
+
+            </div>
+
+            <div class="card">
+
+                <span>Bot</span>
+
+                <strong>
+                    GhossBot
+                </strong>
+
+            </div>
+
+            <div class="card">
+
+                <span>Versión</span>
+
+                <strong>
+                    1.0.0
+                </strong>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="/dashboard.js"></script>
+
+</body>
+
+</html>
