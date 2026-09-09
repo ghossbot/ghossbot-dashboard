@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Servidor | GhossBot</title>
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                G
+            </div>
+
+            <div>
+
+                <h1>GhossBot</h1>
+
+                <span>Dashboard</span>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <button class="menu active">
+                🏠
+                <span>Inicio</span>
+            </button>
+
+            <button class="menu">
+                ⚙️
+                <span>Configuración</span>
+            </button>
+
+            <button class="menu">
+                👋
+                <span>Bienvenida</span>
+            </button>
+
+            <button class="menu">
+                🛡️
+                <span>Moderación</span>
+            </button>
+
+            <button class="menu">
+                💬
+                <span>Quotes</span>
+            </button>
+
+            <button class="menu">
+                📜
+                <span>Logs</span>
+            </button>
+
+        </nav>
+
+    </aside>
+
+
+
+    <main>
+
+        <header>
+
+            <div>
+
+                <h2 id="serverName">
+                    Cargando servidor...
+                </h2>
+
+                <p id="userText">
+                    Cargando usuario...
+                </p>
+
+            </div>
+
+            <a
+                class="logout"
+                href="/auth/logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </header>
+
+
+
+        <section class="panel server-header">
+
+            <div class="server-profile">
+
+                <img
+                    id="serverIcon"
+                    class="server-big-icon"
+                    src=""
+                    alt="Icono del servidor"
+                >
+
+                <div>
+
+                    <h3 id="serverTitle">
+                        Cargando...
+                    </h3>
+
+                    <p id="serverID">
+                        ID: ...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="cards">
+
+            <div class="card">
+
+                <span>
+                    Estado de GhossBot
+                </span>
+
+                <strong class="online">
+                    ● Online
+                </strong>
+
+            </div>
+
+
+            <div class="card">
+
+                <span>
+                    Configuración
+                </span>
+
+                <strong>
+                    ⚙️ Disponible
+                </strong>
+
+            </div>
+
+
+            <div class="card">
+
+                <span>
+                    Servidor
+                </span>
+
+                <strong id="serverCardName">
+                    ...
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="panel">
+
+            <h3>
+                ⚙️ Configuración del servidor
+            </h3>
+
+            <p class="section-description">
+                Elegí qué parte de GhossBot querés configurar.
+            </p>
+
+
+            <div class="config-grid">
+
+
+                <button
+                    class="config-card"
+                    onclick="openConfig('settings')"
+                >
+
+                    <div class="config-icon">
+                        ⚙️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Configuración
+                        </strong>
+
+                        <p>
+                            Configuración general de GhossBot.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+
+                <button
+                    class="config-card"
+                    onclick="openConfig('welcome')"
+                >
+
+                    <div class="config-icon">
+                        👋
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Bienvenida
+                        </strong>
+
+                        <p>
+                            Configurá mensajes de bienvenida.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+
+                <button
+                    class="config-card"
+                    onclick="openConfig('moderation')"
+                >
+
+                    <div class="config-icon">
+                        🛡️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Moderación
+                        </strong>
+
+                        <p>
+                            Configurá las funciones de moderación.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+
+                <button
+                    class="config-card"
+                    onclick="openConfig('quotes')"
+                >
+
+                    <div class="config-icon">
+                        💬
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Quotes
+                        </strong>
+
+                        <p>
+                            Configurá el sistema de Quotes.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+
+                <button
+                    class="config-card"
+                    onclick="openConfig('logs')"
+                >
+
+                    <div class="config-icon">
+                        📜
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Logs
+                        </strong>
+
+                        <p>
+                            Configurá los registros del servidor.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="/server.js"></script>
+
+</body>
+
+</html>
