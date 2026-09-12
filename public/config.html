@@ -19,6 +19,7 @@
 
 </head>
 
+
 <body>
 
 
@@ -91,7 +92,7 @@
 
 
 
-        <section class="panel">
+        <section class="panel server-header">
 
             <div class="config-page-title">
 
@@ -99,7 +100,7 @@
                     id="serverIcon"
                     class="server-big-icon"
                     src=""
-                    alt="Servidor"
+                    alt="Icono del servidor"
                 >
 
 
@@ -124,11 +125,12 @@
         <section class="panel">
 
             <h3>
-                ⚙️ Configuración de GhossBot
+                ⚙️ Configurar GhossBot
             </h3>
 
             <p class="section-description">
-                Seleccioná qué función querés configurar.
+                Seleccioná una categoría para configurar
+                GhossBot en este servidor.
             </p>
 
 
@@ -147,7 +149,7 @@
                     <div>
 
                         <strong>
-                            Configuración general
+                            Configuración
                         </strong>
 
                         <p>
@@ -176,7 +178,7 @@
                         </strong>
 
                         <p>
-                            Configurá los mensajes de bienvenida.
+                            Mensajes para nuevos miembros.
                         </p>
 
                     </div>
@@ -226,7 +228,7 @@
                         </strong>
 
                         <p>
-                            Configurá dónde se envían los Quotes.
+                            Configuración del sistema de Quotes.
                         </p>
 
                     </div>
@@ -251,7 +253,7 @@
                         </strong>
 
                         <p>
-                            Configurá los registros del bot.
+                            Registros y eventos del bot.
                         </p>
 
                     </div>
@@ -264,6 +266,7 @@
         </section>
 
 
+
         <section
             id="configurationArea"
             class="panel hidden"
@@ -273,12 +276,16 @@
                 Configuración
             </h3>
 
-            <div id="configurationContent"></div>
+
+            <div
+                id="configurationContent"
+            ></div>
 
         </section>
 
 
     </main>
+
 
 
     <script src="/config.js"></script>
