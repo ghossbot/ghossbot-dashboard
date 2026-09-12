@@ -739,4 +739,157 @@ header p {
         font-size: 18px;
     }
 
+    /* ==========================================
+   CONFIGURACIÓN
+========================================== */
+
+.hidden {
+    display: none;
+}
+
+.config-page-title {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.setting-box {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    background: #101015;
+
+    border: 1px solid #292933;
+
+    border-radius: 12px;
+}
+
+.setting-box h4 {
+    font-size: 17px;
+
+    margin-bottom: 8px;
+}
+
+.setting-box p {
+    color: #888;
+
+    font-size: 14px;
+
+    margin-bottom: 20px;
+}
+
+
+/* ==========================================
+   FORMULARIOS
+========================================== */
+
+.form-group {
+    margin-top: 20px;
+
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #ddd;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.config-select {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    background: #18181f;
+
+    color: white;
+
+    border: 1px solid #30303a;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+.config-select:focus {
+    border-color: #ff2775;
+}
+
+
+/* ==========================================
+   BOTÓN GUARDAR
+========================================== */
+
+.save-config {
+    background: #ff2775;
+
+    color: white;
+
+    border: none;
+
+    padding: 11px 18px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.save-config:hover {
+    opacity: .85;
+
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================
+   MENSAJE DE ESTADO
+========================================== */
+
+.config-status {
+    margin-top: 15px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.config-status.success {
+    color: #43d17a;
+}
+
+.config-status.error {
+    color: #ff5555;
+}
+
+
+/* ==========================================
+   PRÓXIMAMENTE
+========================================== */
+
+.coming-soon {
+    margin-top: 15px;
+
+    padding: 12px;
+
+    background: #18181f;
+
+    border-radius: 8px;
+
+    color: #999;
+
+    font-size: 13px;
+}
 }
