@@ -1,194 +1,718 @@
-async function loadServer() {
+const express = require("express");
+const path = require("path");
+const session = require("express-session");
 
-    // =====================================
-    // OBTENER ID DEL SERVIDOR
-    // =====================================
+const app = express();
 
-    const params =
-        new URLSearchParams(
-            window.location.search
+const PORT =
+    process.env.PORT || 3000;
+
+
+app.use(
+    express.json()
+);
+
+
+app.use(
+    session({
+        secret:
+            process.env.SESSION_SECRET ||
+            "ghossbot-dashboard-secret",
+
+        resave: false,
+
+        saveUninitialized: false
+    })
+);
+
+
+app.use(
+    express.static(
+        path.join(__dirname, "public")
+    )
+);
+
+
+// ==========================================
+// BASE TEMPORAL DE CONFIGURACIONES
+// ==========================================
+//
+// IMPORTANTE:
+// Esto funciona mientras el servidor está
+// funcionando. Más adelante lo conectaremos
+// a una base de datos para que no se pierda
+// al reiniciar Render.
+//
+
+const guildConfigs = {};
+
+
+
+// ==========================================
+// ESTADO
+// ==========================================
+
+app.get(
+    "/api/status",
+    (req, res) => {
+
+        res.json({
+
+            online: true,
+
+            bot: "GhossBot",
+
+            version: "1.0.0"
+
+        });
+
+    }
+);
+
+
+
+// ==========================================
+// LOGIN DISCORD
+// ==========================================
+
+app.get(
+    "/auth/discord",
+    (req, res) => {
+
+        const clientId =
+            process.env.CLIENT_ID;
+
+
+        const redirectUri =
+            process.env.DISCORD_REDIRECT_URI;
+
+
+        const params =
+            new URLSearchParams({
+
+                client_id:
+                    clientId,
+
+                redirect_uri:
+                    redirectUri,
+
+                response_type:
+                    "code",
+
+                scope:
+                    "identify guilds"
+
+            });
+
+
+        res.redirect(
+            `https://discord.com/oauth2/authorize?${params.toString()}`
+        );
+
+    }
+);
+
+
+
+// ==========================================
+// CALLBACK
+// ==========================================
+
+app.get(
+    "/auth/discord/callback",
+    async (req, res) => {
+
+        const code =
+            req.query.code;
+
+
+        if (!code) {
+
+            return res
+                .status(400)
+                .send(
+                    "No se recibió el código de Discord."
+                );
+
+        }
+
+
+        try {
+
+            const params =
+                new URLSearchParams({
+
+                    client_id:
+                        process.env.CLIENT_ID,
+
+                    client_secret:
+                        process.env.CLIENT_SECRET,
+
+                    grant_type:
+                        "authorization_code",
+
+                    code:
+                        code,
+
+                    redirect_uri:
+                        process.env.DISCORD_REDIRECT_URI
+
+                });
+
+
+            const tokenResponse =
+                await fetch(
+                    "https://discord.com/api/oauth2/token",
+                    {
+
+                        method:
+                            "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/x-www-form-urlencoded"
+
+                        },
+
+                        body:
+                            params
+
+                    }
+                );
+
+
+            const tokenData =
+                await tokenResponse.json();
+
+
+            if (!tokenData.access_token) {
+
+                console.error(
+                    tokenData
+                );
+
+
+                return res
+                    .status(500)
+                    .send(
+                        "No se pudo iniciar sesión con Discord."
+                    );
+
+            }
+
+
+            const userResponse =
+                await fetch(
+                    "https://discord.com/api/users/@me",
+                    {
+
+                        headers: {
+
+                            Authorization:
+                                `Bearer ${tokenData.access_token}`
+
+                        }
+
+                    }
+                );
+
+
+            const user =
+                await userResponse.json();
+
+
+            req.session.user =
+                user;
+
+
+            req.session.accessToken =
+                tokenData.access_token;
+
+
+            res.redirect(
+                "/dashboard.html"
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            res
+                .status(500)
+                .send(
+                    "Ocurrió un error al conectar con Discord."
+                );
+
+        }
+
+    }
+);
+
+
+
+// ==========================================
+// USUARIO
+// ==========================================
+
+app.get(
+    "/api/me",
+    (req, res) => {
+
+        if (!req.session.user) {
+
+            return res
+                .status(401)
+                .json({
+                    loggedIn: false
+                });
+
+        }
+
+
+        res.json({
+
+            loggedIn: true,
+
+            user:
+                req.session.user
+
+        });
+
+    }
+);
+
+
+
+// ==========================================
+// SERVIDORES
+// ==========================================
+
+app.get(
+    "/api/guilds",
+    async (req, res) => {
+
+        if (!req.session.accessToken) {
+
+            return res
+                .status(401)
+                .json({
+
+                    error:
+                        "No estás conectado."
+
+                });
+
+        }
+
+
+        const botToken =
+            process.env.DISCORD_BOT_TOKEN;
+
+
+        if (!botToken) {
+
+            return res
+                .status(500)
+                .json({
+
+                    error:
+                        "Falta DISCORD_BOT_TOKEN en Render."
+
+                });
+
+        }
+
+
+        try {
+
+            const userResponse =
+                await fetch(
+                    "https://discord.com/api/users/@me/guilds",
+                    {
+
+                        headers: {
+
+                            Authorization:
+                                `Bearer ${req.session.accessToken}`
+
+                        }
+
+                    }
+                );
+
+
+            const guilds =
+                await userResponse.json();
+
+
+            if (!Array.isArray(guilds)) {
+
+                return res
+                    .status(500)
+                    .json({
+
+                        error:
+                            "Discord no devolvió los servidores."
+
+                    });
+
+            }
+
+
+            const result = [];
+
+
+            for (
+                const guild
+                of guilds
+            ) {
+
+                const permissions =
+                    BigInt(
+                        guild.permissions || 0
+                    );
+
+
+                const administrator =
+                    (
+                        permissions &
+                        0x8n
+                    ) === 0x8n;
+
+
+                const manageable =
+                    guild.owner === true ||
+                    administrator;
+
+
+                if (!manageable) {
+                    continue;
+                }
+
+
+                let botInstalled =
+                    false;
+
+
+                try {
+
+                    const botResponse =
+                        await fetch(
+                            `https://discord.com/api/v10/guilds/${guild.id}`,
+                            {
+
+                                headers: {
+
+                                    Authorization:
+                                        `Bot ${botToken}`
+
+                                }
+
+                            }
+                        );
+
+
+                    botInstalled =
+                        botResponse.ok;
+
+
+                } catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+                }
+
+
+                result.push({
+
+                    id:
+                        guild.id,
+
+                    name:
+                        guild.name,
+
+                    icon:
+                        guild.icon,
+
+                    owner:
+                        guild.owner,
+
+                    permissions:
+                        guild.permissions,
+
+                    botInstalled:
+                        botInstalled
+
+                });
+
+            }
+
+
+            res.json(
+                result
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            res
+                .status(500)
+                .json({
+
+                    error:
+                        "No se pudieron obtener los servidores."
+
+                });
+
+        }
+
+    }
+);
+
+
+
+// ==========================================
+// CANALES DEL SERVIDOR
+// ==========================================
+
+app.get(
+    "/api/guilds/:guildID/channels",
+    async (req, res) => {
+
+        const guildID =
+            req.params.guildID;
+
+
+        const botToken =
+            process.env.DISCORD_BOT_TOKEN;
+
+
+        if (!botToken) {
+
+            return res
+                .status(500)
+                .json({
+
+                    error:
+                        "Falta DISCORD_BOT_TOKEN."
+
+                });
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `https://discord.com/api/v10/guilds/${guildID}/channels`,
+                    {
+
+                        headers: {
+
+                            Authorization:
+                                `Bot ${botToken}`
+
+                        }
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                const error =
+                    await response.text();
+
+
+                console.error(
+                    error
+                );
+
+
+                return res
+                    .status(
+                        response.status
+                    )
+                    .json({
+
+                        error:
+                            "No se pudieron obtener los canales."
+
+                    });
+
+            }
+
+
+            const channels =
+                await response.json();
+
+
+            res.json(
+                channels
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            res
+                .status(500)
+                .json({
+
+                    error:
+                        "Error obteniendo los canales."
+
+                });
+
+        }
+
+    }
+);
+
+
+
+// ==========================================
+// OBTENER CONFIGURACIÓN DE QUOTES
+// ==========================================
+
+app.get(
+    "/api/guilds/:guildID/quotes",
+    (req, res) => {
+
+        const guildID =
+            req.params.guildID;
+
+
+        const config =
+            guildConfigs[guildID] || {};
+
+
+        res.json({
+
+            channelID:
+                config.quoteChannelID || null
+
+        });
+
+    }
+);
+
+
+
+// ==========================================
+// GUARDAR CONFIGURACIÓN DE QUOTES
+// ==========================================
+
+app.post(
+    "/api/guilds/:guildID/quotes",
+    (req, res) => {
+
+        const guildID =
+            req.params.guildID;
+
+
+        const channelID =
+            req.body.channelID;
+
+
+        if (!channelID) {
+
+            return res
+                .status(400)
+                .json({
+
+                    error:
+                        "No se especificó ningún canal."
+
+                });
+
+        }
+
+
+        if (!guildConfigs[guildID]) {
+
+            guildConfigs[guildID] = {};
+
+        }
+
+
+        guildConfigs[guildID]
+            .quoteChannelID =
+                channelID;
+
+
+        console.log(
+            `Quotes configurado: ${guildID} → ${channelID}`
         );
 
 
-    const guildID =
-        params.get("id");
+        res.json({
 
+            success:
+                true,
 
-    if (!guildID) {
+            guildID:
+                guildID,
 
-        window.location.href =
-            "/dashboard.html";
+            channelID:
+                channelID
 
-        return;
-
-    }
-
-
-
-    // =====================================
-    // USUARIO
-    // =====================================
-
-    const userResponse =
-        await fetch("/api/me");
-
-
-    if (!userResponse.ok) {
-
-        window.location.href = "/";
-
-        return;
+        });
 
     }
-
-
-    const userData =
-        await userResponse.json();
-
-
-    document.getElementById(
-        "userText"
-    ).textContent =
-        `Conectado como ${userData.user.username}`;
+);
 
 
 
-    // =====================================
-    // SERVIDORES
-    // =====================================
+// ==========================================
+// LOGOUT
+// ==========================================
 
-    const guildResponse =
-        await fetch("/api/guilds");
+app.get(
+    "/auth/logout",
+    (req, res) => {
 
+        req.session.destroy(
+            () => {
 
-    if (!guildResponse.ok) {
+                res.redirect("/");
 
-        window.location.href =
-            "/dashboard.html";
-
-        return;
-
-    }
-
-
-    const guilds =
-        await guildResponse.json();
-
-
-    const guild =
-        guilds.find(
-            server =>
-                server.id === guildID
+            }
         );
 
+    }
+);
 
-    if (!guild) {
 
-        alert(
-            "No tenés acceso a este servidor."
+
+// ==========================================
+// SERVIDOR
+// ==========================================
+
+app.listen(
+    PORT,
+    () => {
+
+        console.log(
+            `GhossBot Dashboard funcionando en el puerto ${PORT}`
         );
 
-        window.location.href =
-            "/dashboard.html";
-
-        return;
-
     }
-
-
-
-    // =====================================
-    // COMPROBAR QUE GHOSSBOT ESTÁ
-    // =====================================
-
-    if (guild.botInstalled !== true) {
-
-        alert(
-            "GhossBot no está instalado en este servidor."
-        );
-
-        window.location.href =
-            "/dashboard.html";
-
-        return;
-
-    }
-
-
-
-    // =====================================
-    // DATOS DEL SERVIDOR
-    // =====================================
-
-    document.getElementById(
-        "serverName"
-    ).textContent =
-        guild.name;
-
-
-    document.getElementById(
-        "serverTitle"
-    ).textContent =
-        guild.name;
-
-
-    document.getElementById(
-        "serverID"
-    ).textContent =
-        `ID: ${guild.id}`;
-
-
-
-    // =====================================
-    // ICONO
-    // =====================================
-
-    let iconURL;
-
-
-    if (guild.icon) {
-
-        iconURL =
-            `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=256`;
-
-    } else {
-
-        iconURL =
-            `https://cdn.discordapp.com/embed/avatars/${guild.id % 5}.png`;
-
-    }
-
-
-    document.getElementById(
-        "serverIcon"
-    ).src =
-        iconURL;
-
-}
-
-
-
-// =====================================
-// ABRIR CONFIGURACIÓN
-// =====================================
-
-function openConfig(section) {
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const guildID =
-        params.get("id");
-
-
-    window.location.href =
-        `/config.html?id=${encodeURIComponent(guildID)}&section=${encodeURIComponent(section)}`;
-
-}
-
-
-
-loadServer();
+);
