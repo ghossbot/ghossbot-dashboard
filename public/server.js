@@ -1,24 +1,33 @@
 async function loadServer() {
 
-    const params = new URLSearchParams(
-        window.location.search
-    );
+    // =====================================
+    // OBTENER ID DEL SERVIDOR
+    // =====================================
 
-    const guildID = params.get("id");
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const guildID =
+        params.get("id");
 
 
     if (!guildID) {
 
-        window.location.href = "/dashboard.html";
+        window.location.href =
+            "/dashboard.html";
 
         return;
 
     }
 
 
-    // ================================
+
+    // =====================================
     // USUARIO
-    // ================================
+    // =====================================
 
     const userResponse =
         await fetch("/api/me");
@@ -37,14 +46,16 @@ async function loadServer() {
         await userResponse.json();
 
 
-    document.getElementById("userText").textContent =
+    document.getElementById(
+        "userText"
+    ).textContent =
         `Conectado como ${userData.user.username}`;
 
 
 
-    // ================================
+    // =====================================
     // SERVIDORES
-    // ================================
+    // =====================================
 
     const guildResponse =
         await fetch("/api/guilds");
@@ -66,7 +77,8 @@ async function loadServer() {
 
     const guild =
         guilds.find(
-            server => server.id === guildID
+            server =>
+                server.id === guildID
         );
 
 
@@ -84,22 +96,15 @@ async function loadServer() {
     }
 
 
-    // ================================
-    // COMPROBAR PERMISOS
-    // ================================
 
-    const permissions =
-        BigInt(guild.permissions || 0);
+    // =====================================
+    // COMPROBAR QUE GHOSSBOT ESTÁ
+    // =====================================
 
-
-    const administrator =
-        (permissions & 0x8n) === 0x8n;
-
-
-    if (!guild.owner && !administrator) {
+    if (guild.botInstalled !== true) {
 
         alert(
-            "No tenés permisos para configurar este servidor."
+            "GhossBot no está instalado en este servidor."
         );
 
         window.location.href =
@@ -111,23 +116,20 @@ async function loadServer() {
 
 
 
-    // ================================
+    // =====================================
     // DATOS DEL SERVIDOR
-    // ================================
+    // =====================================
 
     document.getElementById(
         "serverName"
-    ).textContent = guild.name;
+    ).textContent =
+        guild.name;
 
 
     document.getElementById(
         "serverTitle"
-    ).textContent = guild.name;
-
-
-    document.getElementById(
-        "serverCardName"
-    ).textContent = guild.name;
+    ).textContent =
+        guild.name;
 
 
     document.getElementById(
@@ -137,9 +139,9 @@ async function loadServer() {
 
 
 
-    // ================================
+    // =====================================
     // ICONO
-    // ================================
+    // =====================================
 
     let iconURL;
 
@@ -159,11 +161,16 @@ async function loadServer() {
 
     document.getElementById(
         "serverIcon"
-    ).src = iconURL;
+    ).src =
+        iconURL;
 
 }
 
 
+
+// =====================================
+// ABRIR CONFIGURACIÓN
+// =====================================
 
 function openConfig(section) {
 
@@ -171,6 +178,7 @@ function openConfig(section) {
         new URLSearchParams(
             window.location.search
         );
+
 
     const guildID =
         params.get("id");
