@@ -165,8 +165,9 @@ async function loadConfig() {
         iconURL;
 
 
+
     // ======================================
-    // ABRIR SECCIÓN DESDE URL
+    // ABRIR SECCIÓN
     // ======================================
 
     const section =
@@ -184,10 +185,10 @@ async function loadConfig() {
 
 
 // ==========================================
-// ABRIR CONFIGURACIÓN
+// ABRIR SECCIÓN
 // ==========================================
 
-function openSection(section) {
+async function openSection(section) {
 
     const area =
         document.getElementById(
@@ -208,6 +209,7 @@ function openSection(section) {
 
 
     area.classList.remove("hidden");
+
 
 
     // ======================================
@@ -263,8 +265,8 @@ function openSection(section) {
                 </h4>
 
                 <p>
-                    Acá podremos configurar el canal
-                    y mensaje de bienvenida.
+                    Acá podremos configurar los
+                    mensajes de bienvenida.
                 </p>
 
                 <div class="coming-soon">
@@ -320,33 +322,7 @@ function openSection(section) {
 
     else if (section === "quotes") {
 
-        title.textContent =
-            "💬 Quotes";
-
-
-        content.innerHTML = `
-
-            <div class="setting-box">
-
-                <h4>
-                    Sistema de Quotes
-                </h4>
-
-                <p>
-                    Configurá el canal donde GhossBot
-                    enviará los Quotes.
-                </p>
-
-                <button
-                    class="save-config"
-                    onclick="saveQuotes()"
-                >
-                    💾 Configurar Quotes
-                </button>
-
-            </div>
-
-        `;
+        await loadQuotes();
 
     }
 
@@ -390,17 +366,307 @@ function openSection(section) {
 
 
 // ==========================================
-// QUOTES
+// CARGAR CONFIGURACIÓN DE QUOTES
 // ==========================================
 
-function saveQuotes() {
+async function loadQuotes() {
 
-    alert(
-        "La configuración de Quotes la conectaremos con BDFD en el siguiente paso."
-    );
+    const title =
+        document.getElementById(
+            "configurationTitle"
+        );
+
+
+    const content =
+        document.getElementById(
+            "configurationContent"
+        );
+
+
+    title.textContent =
+        "💬 Quotes";
+
+
+    content.innerHTML = `
+
+        <div class="setting-box">
+
+            <h4>
+                💬 Sistema de Quotes
+            </h4>
+
+            <p>
+                Elegí el canal donde GhossBot
+                enviará los Quotes.
+            </p>
+
+
+            <div class="form-group">
+
+                <label>
+                    Canal de Quotes
+                </label>
+
+
+                <select
+                    id="quoteChannel"
+                    class="config-select"
+                >
+
+                    <option value="">
+                        Cargando canales...
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="save-config"
+                onclick="saveQuotes()"
+            >
+                💾 Guardar configuración
+            </button>
+
+
+            <div
+                id="quoteStatus"
+                class="config-status"
+            ></div>
+
+        </div>
+
+    `;
+
+
+    await loadQuoteChannels();
 
 }
 
 
+
+// ==========================================
+// CARGAR CANALES DE DISCORD
+// ==========================================
+
+async function loadQuoteChannels() {
+
+    const select =
+        document.getElementById(
+            "quoteChannel"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/guilds/${guildID}/channels`
+            );
+
+
+        if (!response.ok) {
+
+            select.innerHTML = `
+
+                <option value="">
+                    ❌ No se pudieron cargar los canales
+                </option>
+
+            `;
+
+            return;
+
+        }
+
+
+        const channels =
+            await response.json();
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Seleccioná un canal
+            </option>
+
+        `;
+
+
+        const textChannels =
+            channels.filter(
+                channel =>
+                    channel.type === 0
+            );
+
+
+        textChannels.forEach(channel => {
+
+            const option =
+                document.createElement("option");
+
+
+            option.value =
+                channel.id;
+
+
+            option.textContent =
+                `# ${channel.name}`;
+
+
+            select.appendChild(
+                option
+            );
+
+        });
+
+
+        // ==================================
+        // CARGAR CONFIGURACIÓN GUARDADA
+        // ==================================
+
+        const configResponse =
+            await fetch(
+                `/api/guilds/${guildID}/quotes`
+            );
+
+
+        if (configResponse.ok) {
+
+            const config =
+                await configResponse.json();
+
+
+            if (config.channelID) {
+
+                select.value =
+                    config.channelID;
+
+            }
+
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        select.innerHTML = `
+
+            <option value="">
+                ❌ Error cargando canales
+            </option>
+
+        `;
+
+    }
+
+}
+
+
+
+// ==========================================
+// GUARDAR QUOTES
+// ==========================================
+
+async function saveQuotes() {
+
+    const select =
+        document.getElementById(
+            "quoteChannel"
+        );
+
+
+    const status =
+        document.getElementById(
+            "quoteStatus"
+        );
+
+
+    const channelID =
+        select.value;
+
+
+    if (!channelID) {
+
+        status.textContent =
+            "⚠️ Seleccioná un canal primero.";
+
+        status.className =
+            "config-status error";
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/guilds/${guildID}/quotes`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        channelID:
+                            channelID
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            status.textContent =
+                data.error ||
+                "❌ No se pudo guardar.";
+
+            status.className =
+                "config-status error";
+
+            return;
+
+        }
+
+
+        status.textContent =
+            "✅ Configuración guardada correctamente.";
+
+        status.className =
+            "config-status success";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        status.textContent =
+            "❌ Error al guardar la configuración.";
+
+        status.className =
+            "config-status error";
+
+    }
+
+}
+
+
+
+// ==========================================
+// INICIAR
+// ==========================================
 
 loadConfig();
