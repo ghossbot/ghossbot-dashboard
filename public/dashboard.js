@@ -287,7 +287,7 @@ function inviteBot(guildID) {
 
     // Tu Client ID de Discord
     const clientID =
-        "PONER_CLIENT_ID_ACA";
+        "864595576511660052";
 
 
     // Administrator
