@@ -2,181 +2,224 @@ let guildID = null;
 
 
 // ==========================================
-// INICIAR
+// INICIAR CONFIGURACIÓN
 // ==========================================
 
 async function loadConfig() {
 
-    const params =
-        new URLSearchParams(
-            window.location.search
+    try {
+
+        // --------------------------------------
+        // ID DEL SERVIDOR
+        // --------------------------------------
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        guildID =
+            params.get("id");
+
+
+        if (!guildID) {
+
+            window.location.href =
+                "/dashboard.html";
+
+            return;
+
+        }
+
+
+        // --------------------------------------
+        // USUARIO
+        // --------------------------------------
+
+        const userResponse =
+            await fetch("/api/me");
+
+
+        if (!userResponse.ok) {
+
+            window.location.href = "/";
+
+            return;
+
+        }
+
+
+        const userData =
+            await userResponse.json();
+
+
+        document.getElementById(
+            "userText"
+        ).textContent =
+            `Conectado como ${userData.user.username}`;
+
+
+
+        // --------------------------------------
+        // SERVIDORES
+        // --------------------------------------
+
+        const guildResponse =
+            await fetch("/api/guilds");
+
+
+        if (!guildResponse.ok) {
+
+            throw new Error(
+                "No se pudieron obtener los servidores."
+            );
+
+        }
+
+
+        const guilds =
+            await guildResponse.json();
+
+
+        const guild =
+            guilds.find(
+                server =>
+                    server.id === guildID
+            );
+
+
+        if (!guild) {
+
+            alert(
+                "No tenés acceso a este servidor."
+            );
+
+            window.location.href =
+                "/dashboard.html";
+
+            return;
+
+        }
+
+
+        // --------------------------------------
+        // COMPROBAR GHOSSBOT
+        // --------------------------------------
+
+        if (guild.botInstalled !== true) {
+
+            alert(
+                "GhossBot no está instalado en este servidor."
+            );
+
+            window.location.href =
+                "/dashboard.html";
+
+            return;
+
+        }
+
+
+        // --------------------------------------
+        // MOSTRAR DATOS
+        // --------------------------------------
+
+        document.getElementById(
+            "serverName"
+        ).textContent =
+            guild.name;
+
+
+        document.getElementById(
+            "serverTitle"
+        ).textContent =
+            guild.name;
+
+
+        document.getElementById(
+            "serverID"
+        ).textContent =
+            `ID: ${guild.id}`;
+
+
+
+        // --------------------------------------
+        // ICONO
+        // --------------------------------------
+
+        let iconURL;
+
+
+        if (guild.icon) {
+
+            iconURL =
+                `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=256`;
+
+        } else {
+
+            iconURL =
+                `https://cdn.discordapp.com/embed/avatars/${guild.id % 5}.png`;
+
+        }
+
+
+        document.getElementById(
+            "serverIcon"
+        ).src =
+            iconURL;
+
+
+
+        // --------------------------------------
+        // SECCIÓN
+        // --------------------------------------
+
+        const section =
+            params.get("section");
+
+
+        if (section) {
+
+            openSection(section);
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando configuración:",
+            error
         );
 
 
-    guildID =
-        params.get("id");
+        document.getElementById(
+            "serverName"
+        ).textContent =
+            "Error";
 
 
-    if (!guildID) {
-
-        window.location.href =
-            "/dashboard.html";
-
-        return;
-
-    }
+        document.getElementById(
+            "serverTitle"
+        ).textContent =
+            "No se pudo cargar el servidor";
 
 
-    // ======================================
-    // USUARIO
-    // ======================================
-
-    const userResponse =
-        await fetch("/api/me");
+        document.getElementById(
+            "serverID"
+        ).textContent =
+            "";
 
 
-    if (!userResponse.ok) {
+        document.getElementById(
+            "userText"
+        ).textContent =
+            "Error cargando información";
 
-        window.location.href = "/";
-
-        return;
-
-    }
-
-
-    const userData =
-        await userResponse.json();
-
-
-    document.getElementById(
-        "userText"
-    ).textContent =
-        `Conectado como ${userData.user.username}`;
-
-
-
-    // ======================================
-    // SERVIDORES
-    // ======================================
-
-    const guildResponse =
-        await fetch("/api/guilds");
-
-
-    if (!guildResponse.ok) {
-
-        window.location.href =
-            "/dashboard.html";
-
-        return;
-
-    }
-
-
-    const guilds =
-        await guildResponse.json();
-
-
-    const guild =
-        guilds.find(
-            server =>
-                server.id === guildID
-        );
-
-
-    if (!guild) {
 
         alert(
-            "No tenés acceso a este servidor."
+            "Hubo un error cargando la configuración. Revisá Render."
         );
-
-        window.location.href =
-            "/dashboard.html";
-
-        return;
-
-    }
-
-
-    // ======================================
-    // COMPROBAR GHOSSBOT
-    // ======================================
-
-    if (guild.botInstalled !== true) {
-
-        alert(
-            "GhossBot no está instalado en este servidor."
-        );
-
-        window.location.href =
-            "/dashboard.html";
-
-        return;
-
-    }
-
-
-    // ======================================
-    // MOSTRAR SERVIDOR
-    // ======================================
-
-    document.getElementById(
-        "serverName"
-    ).textContent =
-        guild.name;
-
-
-    document.getElementById(
-        "serverTitle"
-    ).textContent =
-        guild.name;
-
-
-    document.getElementById(
-        "serverID"
-    ).textContent =
-        `ID: ${guild.id}`;
-
-
-
-    // ======================================
-    // ICONO
-    // ======================================
-
-    let iconURL;
-
-
-    if (guild.icon) {
-
-        iconURL =
-            `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=256`;
-
-    } else {
-
-        iconURL =
-            `https://cdn.discordapp.com/embed/avatars/${guild.id % 5}.png`;
-
-    }
-
-
-    document.getElementById(
-        "serverIcon"
-    ).src =
-        iconURL;
-
-
-
-    // ======================================
-    // ABRIR SECCIÓN
-    // ======================================
-
-    const section =
-        params.get("section");
-
-
-    if (section) {
-
-        openSection(section);
 
     }
 
@@ -188,7 +231,7 @@ async function loadConfig() {
 // ABRIR SECCIÓN
 // ==========================================
 
-async function openSection(section) {
+function openSection(section) {
 
     const area =
         document.getElementById(
@@ -208,12 +251,19 @@ async function openSection(section) {
         );
 
 
+    if (!area || !title || !content) {
+
+        return;
+
+    }
+
+
     area.classList.remove("hidden");
 
 
 
     // ======================================
-    // CONFIGURACIÓN GENERAL
+    // GENERAL
     // ======================================
 
     if (section === "settings") {
@@ -227,11 +277,12 @@ async function openSection(section) {
             <div class="setting-box">
 
                 <h4>
-                    GhossBot
+                    Configuración general
                 </h4>
 
                 <p>
-                    Configuración general del bot.
+                    Acá configuraremos las opciones
+                    generales de GhossBot.
                 </p>
 
                 <div class="coming-soon">
@@ -265,8 +316,8 @@ async function openSection(section) {
                 </h4>
 
                 <p>
-                    Acá podremos configurar los
-                    mensajes de bienvenida.
+                    Acá configuraremos los mensajes
+                    de bienvenida.
                 </p>
 
                 <div class="coming-soon">
@@ -300,8 +351,8 @@ async function openSection(section) {
                 </h4>
 
                 <p>
-                    Acá podremos configurar las
-                    funciones de moderación.
+                    Acá configuraremos las funciones
+                    de moderación.
                 </p>
 
                 <div class="coming-soon">
@@ -322,7 +373,7 @@ async function openSection(section) {
 
     else if (section === "quotes") {
 
-        await loadQuotes();
+        loadQuotes();
 
     }
 
@@ -347,8 +398,8 @@ async function openSection(section) {
                 </h4>
 
                 <p>
-                    Configurá el canal donde se
-                    enviarán los registros.
+                    Acá configuraremos el canal
+                    de registros.
                 </p>
 
                 <div class="coming-soon">
@@ -366,7 +417,7 @@ async function openSection(section) {
 
 
 // ==========================================
-// CARGAR CONFIGURACIÓN DE QUOTES
+// QUOTES
 // ==========================================
 
 async function loadQuotes() {
@@ -447,7 +498,7 @@ async function loadQuotes() {
 
 
 // ==========================================
-// CARGAR CANALES DE DISCORD
+// CANALES
 // ==========================================
 
 async function loadQuoteChannels() {
@@ -504,7 +555,9 @@ async function loadQuoteChannels() {
         textChannels.forEach(channel => {
 
             const option =
-                document.createElement("option");
+                document.createElement(
+                    "option"
+                );
 
 
             option.value =
@@ -522,9 +575,9 @@ async function loadQuoteChannels() {
         });
 
 
-        // ==================================
-        // CARGAR CONFIGURACIÓN GUARDADA
-        // ==================================
+        // --------------------------------------
+        // CONFIGURACIÓN GUARDADA
+        // --------------------------------------
 
         const configResponse =
             await fetch(
@@ -550,7 +603,10 @@ async function loadQuoteChannels() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Error cargando canales:",
+            error
+        );
 
 
         select.innerHTML = `
@@ -585,14 +641,10 @@ async function saveQuotes() {
         );
 
 
-    const channelID =
-        select.value;
-
-
-    if (!channelID) {
+    if (!select.value) {
 
         status.textContent =
-            "⚠️ Seleccioná un canal primero.";
+            "⚠️ Seleccioná un canal.";
 
         status.className =
             "config-status error";
@@ -608,17 +660,25 @@ async function saveQuotes() {
             await fetch(
                 `/api/guilds/${guildID}/quotes`,
                 {
-                    method: "POST",
+
+                    method:
+                        "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
-                    body: JSON.stringify({
-                        channelID:
-                            channelID
-                    })
+                    body:
+                        JSON.stringify({
+
+                            channelID:
+                                select.value
+
+                        })
+
                 }
             );
 
@@ -650,11 +710,13 @@ async function saveQuotes() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         status.textContent =
-            "❌ Error al guardar la configuración.";
+            "❌ Error al guardar.";
 
         status.className =
             "config-status error";
@@ -666,7 +728,7 @@ async function saveQuotes() {
 
 
 // ==========================================
-// INICIAR
+// ARRANCAR
 // ==========================================
 
 loadConfig();
