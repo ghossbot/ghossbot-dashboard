@@ -612,3 +612,131 @@ header p {
     }
 
 }
+
+/* ==========================================
+   PÁGINA DEL SERVIDOR
+========================================== */
+
+.server-header {
+    margin-bottom: 20px;
+}
+
+.server-profile {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.server-big-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    object-fit: cover;
+    background: #24242c;
+}
+
+.server-profile h3 {
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.server-profile p {
+    color: #777;
+    font-size: 13px;
+}
+
+.section-description {
+    color: #888;
+    margin-top: 6px;
+    margin-bottom: 20px;
+}
+
+
+/* ==========================================
+   CONFIGURACIÓN
+========================================== */
+
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.config-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    width: 100%;
+
+    padding: 18px;
+
+    background: #101015;
+
+    border: 1px solid #292933;
+
+    border-radius: 12px;
+
+    color: white;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.config-card:hover {
+    border-color: #ff2775;
+    transform: translateY(-2px);
+}
+
+.config-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #1c1c24;
+
+    border-radius: 12px;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+.config-card strong {
+    font-size: 16px;
+}
+
+.config-card p {
+    color: #777;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+
+/* ==========================================
+   CELULAR
+========================================== */
+
+@media (max-width: 700px) {
+
+    .config-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .server-big-icon {
+        width: 65px;
+        height: 65px;
+    }
+
+    .server-profile h3 {
+        font-size: 18px;
+    }
+
+}
