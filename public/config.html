@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Configuración | GhossBot</title>
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+
+</head>
+
+<body>
+
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                G
+            </div>
+
+            <div>
+
+                <h1>GhossBot</h1>
+
+                <span>Dashboard</span>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a
+                class="menu"
+                href="/dashboard.html"
+            >
+                🏠
+                <span>Servidores</span>
+            </a>
+
+            <a class="menu active">
+                ⚙️
+                <span>Configuración</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <main>
+
+
+        <header>
+
+            <div>
+
+                <h2 id="serverName">
+                    Cargando servidor...
+                </h2>
+
+                <p id="userText">
+                    Cargando usuario...
+                </p>
+
+            </div>
+
+
+            <a
+                class="logout"
+                href="/auth/logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </header>
+
+
+
+        <section class="panel">
+
+            <div class="config-page-title">
+
+                <img
+                    id="serverIcon"
+                    class="server-big-icon"
+                    src=""
+                    alt="Servidor"
+                >
+
+
+                <div>
+
+                    <h3 id="serverTitle">
+                        Cargando...
+                    </h3>
+
+                    <p id="serverID">
+                        ID: ...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="panel">
+
+            <h3>
+                ⚙️ Configuración de GhossBot
+            </h3>
+
+            <p class="section-description">
+                Seleccioná qué función querés configurar.
+            </p>
+
+
+            <div class="config-grid">
+
+
+                <button
+                    class="config-card"
+                    onclick="openSection('settings')"
+                >
+
+                    <div class="config-icon">
+                        ⚙️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Configuración general
+                        </strong>
+
+                        <p>
+                            Opciones generales del bot.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+
+                <button
+                    class="config-card"
+                    onclick="openSection('welcome')"
+                >
+
+                    <div class="config-icon">
+                        👋
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Bienvenida
+                        </strong>
+
+                        <p>
+                            Configurá los mensajes de bienvenida.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+
+                <button
+                    class="config-card"
+                    onclick="openSection('moderation')"
+                >
+
+                    <div class="config-icon">
+                        🛡️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Moderación
+                        </strong>
+
+                        <p>
+                            Herramientas de moderación.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+
+                <button
+                    class="config-card"
+                    onclick="openSection('quotes')"
+                >
+
+                    <div class="config-icon">
+                        💬
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Quotes
+                        </strong>
+
+                        <p>
+                            Configurá dónde se envían los Quotes.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+
+                <button
+                    class="config-card"
+                    onclick="openSection('logs')"
+                >
+
+                    <div class="config-icon">
+                        📜
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Logs
+                        </strong>
+
+                        <p>
+                            Configurá los registros del bot.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+        <section
+            id="configurationArea"
+            class="panel hidden"
+        >
+
+            <h3 id="configurationTitle">
+                Configuración
+            </h3>
+
+            <div id="configurationContent"></div>
+
+        </section>
+
+
+    </main>
+
+
+    <script src="/config.js"></script>
+
+</body>
+
+</html>
