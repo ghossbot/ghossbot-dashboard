@@ -455,3 +455,160 @@ header p {
     }
 
 }
+
+/* ==========================================
+   ESTADO DE GHOSSBOT
+========================================== */
+
+.bot-installed {
+    color: #43d17a !important;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.bot-not-installed {
+    color: #999 !important;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+
+/* ==========================================
+   BOTÓN INVITAR
+========================================== */
+
+.invite {
+    background: #5865f2;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 15px;
+
+    border-radius: 7px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.invite:hover {
+    opacity: .85;
+}
+
+
+/* ==========================================
+   BOTÓN CONFIGURAR
+========================================== */
+
+.configure {
+    background: #ff2775;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 15px;
+
+    border-radius: 7px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.configure:hover {
+    opacity: .85;
+}
+
+
+/* ==========================================
+   SERVIDORES
+========================================== */
+
+.guild {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 15px;
+
+    margin-top: 12px;
+
+    background: #101015;
+
+    border: 1px solid #292933;
+
+    border-radius: 12px;
+
+    transition: .2s;
+}
+
+.guild:hover {
+    border-color: #ff2775;
+
+    transform: translateY(-1px);
+}
+
+.guild-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-width: 0;
+}
+
+.guild-icon {
+    width: 55px;
+
+    height: 55px;
+
+    border-radius: 16px;
+
+    object-fit: cover;
+
+    background: #24242c;
+
+    flex-shrink: 0;
+}
+
+.guild-info strong {
+    font-size: 16px;
+}
+
+.guild-info p {
+    font-size: 13px;
+
+    margin-top: 5px;
+}
+
+
+/* ==========================================
+   MÓVIL
+========================================== */
+
+@media (max-width: 700px) {
+
+    .guild {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 14px;
+    }
+
+    .configure,
+    .invite {
+        width: 100%;
+    }
+
+}
