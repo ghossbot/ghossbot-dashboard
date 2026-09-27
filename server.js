@@ -33,52 +33,105 @@ app.use(
 
 
 // ==========================================
-// CONFIGURACIONES TEMPORALES
+// CONFIGURACIONES
 // ==========================================
 
 const guildConfigs = {};
 
 
 // ==========================================
+// FUNCIONES DISCORD
+// ==========================================
+
+async function discordBotRequest(
+    endpoint,
+    options = {}
+) {
+
+    const token =
+        process.env.DISCORD_BOT_TOKEN;
+
+    if (!token) {
+        throw new Error(
+            "DISCORD_BOT_TOKEN no está configurado."
+        );
+    }
+
+    const response =
+        await fetch(
+            `https://discord.com/api/v10${endpoint}`,
+            {
+                ...options,
+
+                headers: {
+                    Authorization:
+                        `Bot ${token}`,
+
+                    "Content-Type":
+                        "application/json",
+
+                    ...(options.headers || {})
+                }
+            }
+        );
+
+    return response;
+}
+
+
+// ==========================================
 // ESTADO
 // ==========================================
 
-app.get("/api/status", (req, res) => {
+app.get(
+    "/api/status",
+    (req, res) => {
 
-    res.json({
-        online: true,
-        bot: "GhossBot",
-        version: "1.0.0"
-    });
+        res.json({
+            online: true,
+            bot: "GhossBot",
+            version: "1.0.0"
+        });
 
-});
+    }
+);
 
 
 // ==========================================
 // LOGIN DISCORD
 // ==========================================
 
-app.get("/auth/discord", (req, res) => {
+app.get(
+    "/auth/discord",
+    (req, res) => {
 
-    const clientId =
-        process.env.CLIENT_ID;
+        const clientId =
+            process.env.CLIENT_ID;
 
-    const redirectUri =
-        process.env.DISCORD_REDIRECT_URI;
+        const redirectUri =
+            process.env.DISCORD_REDIRECT_URI;
 
-    const params =
-        new URLSearchParams({
-            client_id: clientId,
-            redirect_uri: redirectUri,
-            response_type: "code",
-            scope: "identify guilds"
-        });
+        const params =
+            new URLSearchParams({
+                client_id:
+                    clientId,
 
-    res.redirect(
-        `https://discord.com/oauth2/authorize?${params.toString()}`
-    );
+                redirect_uri:
+                    redirectUri,
 
-});
+                response_type:
+                    "code",
+
+                scope:
+                    "identify guilds"
+            });
+
+        res.redirect(
+            `https://discord.com/oauth2/authorize?${params.toString()}`
+        );
+
+    }
+);
 
 
 // ==========================================
@@ -209,32 +262,35 @@ app.get(
 // USUARIO ACTUAL
 // ==========================================
 
-app.get("/api/me", (req, res) => {
+app.get(
+    "/api/me",
+    (req, res) => {
 
-    if (!req.session.user) {
+        if (!req.session.user) {
 
-        return res
-            .status(401)
-            .json({
-                loggedIn: false
-            });
+            return res
+                .status(401)
+                .json({
+                    loggedIn: false
+                });
+
+        }
+
+        res.json({
+
+            loggedIn: true,
+
+            user:
+                req.session.user
+
+        });
 
     }
-
-    res.json({
-
-        loggedIn: true,
-
-        user:
-            req.session.user
-
-    });
-
-});
+);
 
 
 // ==========================================
-// SERVIDORES DEL USUARIO
+// OBTENER SERVIDORES
 // ==========================================
 
 app.get(
@@ -288,12 +344,9 @@ app.get(
             }
 
 
-            /*
-             * ADMINISTRADOR = 0x8
-             *
-             * Mostramos solamente servidores
-             * que el usuario puede administrar.
-             */
+            // ======================================
+            // SERVIDORES ADMINISTRABLES
+            // ======================================
 
             const manageableGuilds =
                 guilds.filter(guild => {
@@ -301,19 +354,16 @@ app.get(
                     const isOwner =
                         guild.owner === true;
 
-
                     const permissions =
                         BigInt(
                             guild.permissions || 0
                         );
-
 
                     const administrator =
                         (
                             permissions &
                             0x8n
                         ) === 0x8n;
-
 
                     return (
                         isOwner ||
@@ -323,46 +373,100 @@ app.get(
                 });
 
 
-            /*
-             * IMPORTANTE:
-             *
-             * Por ahora NO intentamos comprobar
-             * la presencia de GhossBot mediante
-             * un token.
-             *
-             * Primero dejamos funcionando
-             * correctamente el dashboard.
-             *
-             * La detección automática del bot
-             * la hacemos en el siguiente paso.
-             */
+            // ======================================
+            // COMPROBAR GHOSSBOT
+            // ======================================
 
-            const result =
-                manageableGuilds.map(guild => {
+            const result = [];
 
-                    return {
+            for (
+                const guild
+                of manageableGuilds
+            ) {
 
-                        id:
-                            guild.id,
+                let botInstalled =
+                    false;
 
-                        name:
-                            guild.name,
 
-                        icon:
-                            guild.icon,
+                try {
 
-                        owner:
-                            guild.owner,
+                    /*
+                     * Primero obtenemos la cuenta
+                     * del bot mediante su token.
+                     */
 
-                        permissions:
-                            guild.permissions,
+                    const botUserResponse =
+                        await discordBotRequest(
+                            "/users/@me"
+                        );
 
-                        botInstalled:
-                            null
 
-                    };
+                    if (
+                        botUserResponse.ok
+                    ) {
+
+                        const botUser =
+                            await botUserResponse.json();
+
+
+                        /*
+                         * Comprobamos si el bot
+                         * es miembro del servidor.
+                         */
+
+                        const memberResponse =
+                            await discordBotRequest(
+                                `/guilds/${guild.id}/members/${botUser.id}`
+                            );
+
+
+                        if (
+                            memberResponse.ok
+                        ) {
+
+                            botInstalled =
+                                true;
+
+                        }
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        `Error comprobando bot en ${guild.name}:`,
+                        error.message
+                    );
+
+                    botInstalled =
+                        false;
+
+                }
+
+
+                result.push({
+
+                    id:
+                        guild.id,
+
+                    name:
+                        guild.name,
+
+                    icon:
+                        guild.icon,
+
+                    owner:
+                        guild.owner,
+
+                    permissions:
+                        guild.permissions,
+
+                    botInstalled:
+                        botInstalled
 
                 });
+
+            }
 
 
             res.json(
@@ -373,6 +477,7 @@ app.get(
         } catch (error) {
 
             console.error(
+                "Error obteniendo servidores:",
                 error
             );
 
@@ -391,33 +496,120 @@ app.get(
 
 
 // ==========================================
+// INVITACIÓN DEL BOT
+// ==========================================
+
+app.get(
+    "/api/bot/invite",
+    (req, res) => {
+
+        const clientId =
+            process.env.CLIENT_ID;
+
+        if (!clientId) {
+
+            return res
+                .status(500)
+                .json({
+                    error:
+                        "CLIENT_ID no está configurado."
+                });
+
+        }
+
+
+        const params =
+            new URLSearchParams({
+
+                client_id:
+                    clientId,
+
+                scope:
+                    "bot applications.commands",
+
+                permissions:
+                    "0"
+
+            });
+
+
+        const inviteURL =
+            `https://discord.com/oauth2/authorize?${params.toString()}`;
+
+
+        res.json({
+
+            url:
+                inviteURL
+
+        });
+
+    }
+);
+
+
+// ==========================================
 // CANALES DEL SERVIDOR
 // ==========================================
-//
-// POR AHORA NO DEPENDE DEL BOT TOKEN.
-// Esta ruta queda preparada para la próxima
-// etapa de integración.
-//
 
 app.get(
     "/api/guilds/:guildID/channels",
     async (req, res) => {
 
-        /*
-         * Discord no permite obtener los canales
-         * privados de un servidor utilizando
-         * simplemente el OAuth del usuario.
-         *
-         * Esta ruta será conectada al sistema
-         * del bot cuando hagamos la integración.
-         */
+        const guildID =
+            req.params.guildID;
 
-        res.status(501).json({
 
-            error:
-                "La obtención de canales se conectará en la próxima etapa."
+        try {
 
-        });
+            const response =
+                await discordBotRequest(
+                    `/guilds/${guildID}/channels`
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                console.error(
+                    "Error obteniendo canales:",
+                    data
+                );
+
+                return res
+                    .status(
+                        response.status
+                    )
+                    .json({
+                        error:
+                            "No se pudieron obtener los canales."
+                    });
+
+            }
+
+
+            res.json(
+                data
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Error obteniendo canales."
+                });
+
+        }
 
     }
 );
@@ -462,7 +654,6 @@ app.post(
         const guildID =
             req.params.guildID;
 
-
         const channelID =
             req.body.channelID;
 
@@ -488,7 +679,7 @@ app.post(
 
         guildConfigs[guildID]
             .quoteChannelID =
-                channelID;
+            channelID;
 
 
         console.log(
@@ -498,7 +689,8 @@ app.post(
 
         res.json({
 
-            success: true,
+            success:
+                true,
 
             guildID:
                 guildID,
