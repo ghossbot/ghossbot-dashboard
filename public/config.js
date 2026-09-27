@@ -2,21 +2,18 @@ let guildID = null;
 
 
 // ==========================================
-// INICIAR CONFIGURACIÓN
+// CARGAR CONFIGURACIÓN
 // ==========================================
 
 async function loadConfig() {
 
     try {
 
-        // --------------------------------------
-        // ID DEL SERVIDOR
-        // --------------------------------------
-
         const params =
             new URLSearchParams(
                 window.location.search
             );
+
 
         guildID =
             params.get("id");
@@ -32,17 +29,20 @@ async function loadConfig() {
         }
 
 
-        // --------------------------------------
+        // ======================================
         // USUARIO
-        // --------------------------------------
+        // ======================================
 
         const userResponse =
-            await fetch("/api/me");
+            await fetch(
+                "/api/me"
+            );
 
 
         if (!userResponse.ok) {
 
-            window.location.href = "/";
+            window.location.href =
+                "/";
 
             return;
 
@@ -59,13 +59,14 @@ async function loadConfig() {
             `Conectado como ${userData.user.username}`;
 
 
-
-        // --------------------------------------
+        // ======================================
         // SERVIDORES
-        // --------------------------------------
+        // ======================================
 
         const guildResponse =
-            await fetch("/api/guilds");
+            await fetch(
+                "/api/guilds"
+            );
 
 
         if (!guildResponse.ok) {
@@ -94,35 +95,41 @@ async function loadConfig() {
                 "No tenés acceso a este servidor."
             );
 
+
             window.location.href =
                 "/dashboard.html";
+
 
             return;
 
         }
 
 
-        // --------------------------------------
-        // COMPROBAR GHOSSBOT
-        // --------------------------------------
+        // ======================================
+        // COMPROBAR BOT
+        // ======================================
 
-        if (guild.botInstalled !== true) {
+        if (
+            guild.botInstalled !== true
+        ) {
 
             alert(
                 "GhossBot no está instalado en este servidor."
             );
 
+
             window.location.href =
                 "/dashboard.html";
+
 
             return;
 
         }
 
 
-        // --------------------------------------
-        // MOSTRAR DATOS
-        // --------------------------------------
+        // ======================================
+        // INFORMACIÓN DEL SERVIDOR
+        // ======================================
 
         document.getElementById(
             "serverName"
@@ -141,11 +148,6 @@ async function loadConfig() {
         ).textContent =
             `ID: ${guild.id}`;
 
-
-
-        // --------------------------------------
-        // ICONO
-        // --------------------------------------
 
         let iconURL;
 
@@ -169,10 +171,9 @@ async function loadConfig() {
             iconURL;
 
 
-
-        // --------------------------------------
+        // ======================================
         // SECCIÓN
-        // --------------------------------------
+        // ======================================
 
         const section =
             params.get("section");
@@ -180,7 +181,9 @@ async function loadConfig() {
 
         if (section) {
 
-            openSection(section);
+            openSection(
+                section
+            );
 
         }
 
@@ -218,7 +221,7 @@ async function loadConfig() {
 
 
         alert(
-            "Hubo un error cargando la configuración. Revisá Render."
+            "Hubo un error cargando la configuración."
         );
 
     }
@@ -226,12 +229,13 @@ async function loadConfig() {
 }
 
 
-
 // ==========================================
 // ABRIR SECCIÓN
 // ==========================================
 
-function openSection(section) {
+function openSection(
+    section
+) {
 
     const area =
         document.getElementById(
@@ -251,29 +255,31 @@ function openSection(section) {
         );
 
 
-    if (!area || !title || !content) {
+    if (
+        !area ||
+        !title ||
+        !content
+    ) {
 
         return;
 
     }
 
 
-    area.classList.remove("hidden");
+    area.classList.remove(
+        "hidden"
+    );
 
 
-
-    // ======================================
-    // GENERAL
-    // ======================================
-
-    if (section === "settings") {
+    if (
+        section === "settings"
+    ) {
 
         title.textContent =
             "⚙️ Configuración general";
 
 
         content.innerHTML = `
-
             <div class="setting-box">
 
                 <h4>
@@ -290,25 +296,20 @@ function openSection(section) {
                 </div>
 
             </div>
-
         `;
 
     }
 
 
-
-    // ======================================
-    // BIENVENIDA
-    // ======================================
-
-    else if (section === "welcome") {
+    else if (
+        section === "welcome"
+    ) {
 
         title.textContent =
             "👋 Bienvenida";
 
 
         content.innerHTML = `
-
             <div class="setting-box">
 
                 <h4>
@@ -325,25 +326,20 @@ function openSection(section) {
                 </div>
 
             </div>
-
         `;
 
     }
 
 
-
-    // ======================================
-    // MODERACIÓN
-    // ======================================
-
-    else if (section === "moderation") {
+    else if (
+        section === "moderation"
+    ) {
 
         title.textContent =
             "🛡️ Moderación";
 
 
         content.innerHTML = `
-
             <div class="setting-box">
 
                 <h4>
@@ -360,37 +356,29 @@ function openSection(section) {
                 </div>
 
             </div>
-
         `;
 
     }
 
 
-
-    // ======================================
-    // QUOTES
-    // ======================================
-
-    else if (section === "quotes") {
+    else if (
+        section === "quotes"
+    ) {
 
         loadQuotes();
 
     }
 
 
-
-    // ======================================
-    // LOGS
-    // ======================================
-
-    else if (section === "logs") {
+    else if (
+        section === "logs"
+    ) {
 
         title.textContent =
             "📜 Logs";
 
 
         content.innerHTML = `
-
             <div class="setting-box">
 
                 <h4>
@@ -407,13 +395,11 @@ function openSection(section) {
                 </div>
 
             </div>
-
         `;
 
     }
 
 }
-
 
 
 // ==========================================
@@ -439,7 +425,6 @@ async function loadQuotes() {
 
 
     content.innerHTML = `
-
         <div class="setting-box">
 
             <h4>
@@ -451,13 +436,11 @@ async function loadQuotes() {
                 enviará los Quotes.
             </p>
 
-
             <div class="form-group">
 
                 <label>
                     Canal de Quotes
                 </label>
-
 
                 <select
                     id="quoteChannel"
@@ -487,7 +470,6 @@ async function loadQuotes() {
             ></div>
 
         </div>
-
     `;
 
 
@@ -496,9 +478,8 @@ async function loadQuotes() {
 }
 
 
-
 // ==========================================
-// CANALES
+// CARGAR CANALES
 // ==========================================
 
 async function loadQuoteChannels() {
@@ -520,11 +501,9 @@ async function loadQuoteChannels() {
         if (!response.ok) {
 
             select.innerHTML = `
-
                 <option value="">
                     ❌ No se pudieron cargar los canales
                 </option>
-
             `;
 
             return;
@@ -537,11 +516,9 @@ async function loadQuoteChannels() {
 
 
         select.innerHTML = `
-
             <option value="">
                 Seleccioná un canal
             </option>
-
         `;
 
 
@@ -552,32 +529,30 @@ async function loadQuoteChannels() {
             );
 
 
-        textChannels.forEach(channel => {
+        textChannels.forEach(
+            channel => {
 
-            const option =
-                document.createElement(
-                    "option"
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    channel.id;
+
+
+                option.textContent =
+                    `# ${channel.name}`;
+
+
+                select.appendChild(
+                    option
                 );
 
+            }
+        );
 
-            option.value =
-                channel.id;
-
-
-            option.textContent =
-                `# ${channel.name}`;
-
-
-            select.appendChild(
-                option
-            );
-
-        });
-
-
-        // --------------------------------------
-        // CONFIGURACIÓN GUARDADA
-        // --------------------------------------
 
         const configResponse =
             await fetch(
@@ -585,13 +560,17 @@ async function loadQuoteChannels() {
             );
 
 
-        if (configResponse.ok) {
+        if (
+            configResponse.ok
+        ) {
 
             const config =
                 await configResponse.json();
 
 
-            if (config.channelID) {
+            if (
+                config.channelID
+            ) {
 
                 select.value =
                     config.channelID;
@@ -610,17 +589,14 @@ async function loadQuoteChannels() {
 
 
         select.innerHTML = `
-
             <option value="">
                 ❌ Error cargando canales
             </option>
-
         `;
 
     }
 
 }
-
 
 
 // ==========================================
@@ -641,13 +617,17 @@ async function saveQuotes() {
         );
 
 
-    if (!select.value) {
+    if (
+        !select.value
+    ) {
 
         status.textContent =
             "⚠️ Seleccioná un canal.";
 
+
         status.className =
             "config-status error";
+
 
         return;
 
@@ -660,23 +640,18 @@ async function saveQuotes() {
             await fetch(
                 `/api/guilds/${guildID}/quotes`,
                 {
-
                     method:
                         "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
                     body:
                         JSON.stringify({
-
                             channelID:
                                 select.value
-
                         })
 
                 }
@@ -693,8 +668,10 @@ async function saveQuotes() {
                 data.error ||
                 "❌ No se pudo guardar.";
 
+
             status.className =
                 "config-status error";
+
 
             return;
 
@@ -703,6 +680,7 @@ async function saveQuotes() {
 
         status.textContent =
             "✅ Configuración guardada correctamente.";
+
 
         status.className =
             "config-status success";
@@ -718,6 +696,7 @@ async function saveQuotes() {
         status.textContent =
             "❌ Error al guardar.";
 
+
         status.className =
             "config-status error";
 
@@ -726,9 +705,8 @@ async function saveQuotes() {
 }
 
 
-
 // ==========================================
-// ARRANCAR
+// INICIAR
 // ==========================================
 
 loadConfig();
