@@ -1,265 +1,298 @@
 async function loadDashboard() {
 
-    const userResponse =
-        await fetch("/api/me");
+    try {
+
+        const userResponse =
+            await fetch("/api/me");
 
 
-    if (!userResponse.ok) {
+        if (!userResponse.ok) {
 
-        window.location.href = "/";
+            window.location.href = "/";
 
-        return;
+            return;
 
-    }
-
-
-    const userData =
-        await userResponse.json();
+        }
 
 
-    document.getElementById(
-        "userText"
-    ).textContent =
-        `Conectado como ${userData.user.username}`;
+        const userData =
+            await userResponse.json();
 
-
-
-    // ==========================================
-    // SERVIDORES
-    // ==========================================
-
-    const guildResponse =
-        await fetch("/api/guilds");
-
-
-    if (!guildResponse.ok) {
 
         document.getElementById(
-            "guilds"
+            "userText"
         ).textContent =
-            "No se pudieron cargar los servidores.";
+            `Conectado como ${userData.user.username}`;
 
-        return;
 
-    }
+        const guildResponse =
+            await fetch("/api/guilds");
 
 
-    const guilds =
-        await guildResponse.json();
+        if (!guildResponse.ok) {
 
-
-    const container =
-        document.getElementById(
-            "guilds"
-        );
-
-
-    container.innerHTML = "";
-
-
-    if (!guilds.length) {
-
-        container.innerHTML = `
-
-            <div class="empty">
-
-                <h3>
-                    😔 No hay servidores configurables
-                </h3>
-
-                <p>
-                    No tenés permisos suficientes
-                    para administrar ningún servidor.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    // ==========================================
-    // MOSTRAR SERVIDORES
-    // ==========================================
-
-    guilds.forEach(guild => {
-
-        const div =
-            document.createElement("div");
-
-
-        div.className =
-            "guild";
-
-
-        let iconURL;
-
-
-        if (guild.icon) {
-
-            iconURL =
-                `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128`;
-
-        } else {
-
-            iconURL =
-                `https://cdn.discordapp.com/embed/avatars/${guild.id % 5}.png`;
-
-        }
-
-
-
-        // ======================================
-        // ESTADO DEL BOT
-        // ======================================
-
-        let botStatus = `
-            <span class="bot-status unknown">
-                ⚪ Verificando bot...
-            </span>
-        `;
-
-
-        let actionButton = `
-
-            <button
-                class="configure"
-                onclick="selectGuild('${guild.id}')"
-            >
-                ⚙️ Configurar
-            </button>
-
-        `;
-
-
-        /*
-         * Por ahora botInstalled puede ser null
-         * porque todavía no tenemos la conexión
-         * directa con el bot BDFD.
-         *
-         * NO mostramos "Invitar bot" falsamente.
-         */
-
-        if (guild.botInstalled === true) {
-
-            botStatus = `
-                <span class="bot-status installed">
-                    🟢 GhossBot está instalado
-                </span>
-            `;
-
-            actionButton = `
-
-                <button
-                    class="configure"
-                    onclick="selectGuild('${guild.id}')"
-                >
-                    ⚙️ Configurar
-                </button>
-
-            `;
-
-        }
-
-
-        else if (guild.botInstalled === false) {
-
-            botStatus = `
-                <span class="bot-status not-installed">
-                    🔴 GhossBot no está instalado
-                </span>
-            `;
-
-            actionButton = `
-
-                <button
-                    class="invite"
-                    onclick="inviteBot('${guild.id}')"
-                >
-                    ➕ Invitar bot
-                </button>
-
-            `;
-
-        }
-
-
-
-        div.innerHTML = `
-
-            <div class="guild-info">
-
-                <img
-                    class="guild-icon"
-                    src="${iconURL}"
-                    alt="Icono de ${escapeHTML(guild.name)}"
-                >
-
-
-                <div>
-
-                    <strong>
-                        ${escapeHTML(guild.name)}
-                    </strong>
-
+            document.getElementById(
+                "guilds"
+            ).innerHTML = `
+                <div class="empty">
+                    <h3>
+                        ❌ No se pudieron cargar los servidores
+                    </h3>
 
                     <p>
-                        ${
-                            guild.owner
-                                ? "👑 Propietario"
-                                : "🛡️ Administrador"
-                        }
+                        Intentá actualizar la página.
+                    </p>
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const guilds =
+            await guildResponse.json();
+
+
+        const container =
+            document.getElementById(
+                "guilds"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (!guilds.length) {
+
+            container.innerHTML = `
+                <div class="empty">
+
+                    <h3>
+                        😔 No hay servidores configurables
+                    </h3>
+
+                    <p>
+                        No tenés permisos suficientes
+                        para administrar ningún servidor.
                     </p>
 
+                </div>
+            `;
 
-                    <div class="guild-bot-status">
+            return;
 
-                        ${botStatus}
+        }
+
+
+        guilds.forEach(guild => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "guild";
+
+
+            let iconURL;
+
+
+            if (guild.icon) {
+
+                iconURL =
+                    `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128`;
+
+            } else {
+
+                iconURL =
+                    `https://cdn.discordapp.com/embed/avatars/${guild.id % 5}.png`;
+
+            }
+
+
+            let botStatus = "";
+
+            let actionButton = "";
+
+
+            // ======================================
+            // BOT INSTALADO
+            // ======================================
+
+            if (
+                guild.botInstalled === true
+            ) {
+
+                botStatus = `
+                    <span class="bot-status installed">
+                        🟢 GhossBot está instalado
+                    </span>
+                `;
+
+
+                actionButton = `
+                    <button
+                        class="configure"
+                        onclick="selectGuild('${guild.id}')"
+                    >
+                        ⚙️ Configurar
+                    </button>
+                `;
+
+            }
+
+
+            // ======================================
+            // BOT NO INSTALADO
+            // ======================================
+
+            else {
+
+                botStatus = `
+                    <span class="bot-status not-installed">
+                        🔴 GhossBot no está instalado
+                    </span>
+                `;
+
+
+                actionButton = `
+                    <button
+                        class="invite"
+                        onclick="inviteBot()"
+                    >
+                        ➕ Invitar bot
+                    </button>
+                `;
+
+            }
+
+
+            div.innerHTML = `
+
+                <div class="guild-info">
+
+                    <img
+                        class="guild-icon"
+                        src="${iconURL}"
+                        alt="Icono de ${escapeHTML(guild.name)}"
+                    >
+
+                    <div>
+
+                        <strong>
+                            ${escapeHTML(guild.name)}
+                        </strong>
+
+                        <p>
+                            ${
+                                guild.owner
+                                    ? "👑 Propietario"
+                                    : "🛡️ Administrador"
+                            }
+                        </p>
+
+                        <div class="guild-bot-status">
+                            ${botStatus}
+                        </div>
 
                     </div>
 
                 </div>
 
-            </div>
+                ${actionButton}
+
+            `;
 
 
-            ${actionButton}
+            container.appendChild(
+                div
+            );
 
-        `;
+        });
 
 
-        container.appendChild(
-            div
+    } catch (error) {
+
+        console.error(
+            "Error cargando dashboard:",
+            error
         );
 
-    });
+
+        document.getElementById(
+            "guilds"
+        ).innerHTML = `
+            <div class="empty">
+
+                <h3>
+                    ❌ Error cargando el dashboard
+                </h3>
+
+                <p>
+                    Revisá la conexión con Discord.
+                </p>
+
+            </div>
+        `;
+
+    }
 
 }
 
 
-
 // ==========================================
-// ESCAPAR HTML
+// INVITAR BOT
 // ==========================================
 
-function escapeHTML(text) {
+async function inviteBot() {
 
-    const div =
-        document.createElement("div");
+    try {
+
+        const response =
+            await fetch(
+                "/api/bot/invite"
+            );
 
 
-    div.textContent =
-        text;
+        const data =
+            await response.json();
 
 
-    return div.innerHTML;
+        if (
+            !response.ok ||
+            !data.url
+        ) {
+
+            alert(
+                "No se pudo generar la invitación de GhossBot."
+            );
+
+            return;
+
+        }
+
+
+        window.location.href =
+            data.url;
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            "No se pudo abrir la invitación de GhossBot."
+        );
+
+    }
 
 }
-
 
 
 // ==========================================
@@ -274,25 +307,23 @@ function selectGuild(id) {
 }
 
 
-
 // ==========================================
-// INVITAR BOT
+// SEGURIDAD HTML
 // ==========================================
 
-function inviteBot(id) {
+function escapeHTML(text) {
 
-    /*
-     * Lo conectaremos al enlace real de
-     * invitación de GhossBot cuando dejemos
-     * definida la integración.
-     */
+    const div =
+        document.createElement(
+            "div"
+        );
 
-    alert(
-        "La invitación de GhossBot se configurará en el siguiente paso."
-    );
+    div.textContent =
+        text;
+
+    return div.innerHTML;
 
 }
-
 
 
 // ==========================================
