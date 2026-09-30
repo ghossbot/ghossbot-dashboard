@@ -10,13 +10,21 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>GhossBot Dashboard</title>
+    <title>Dashboard | GhossBot</title>
 
-    <link rel="stylesheet" href="/style.css">
+    <link
+        rel="stylesheet"
+        href="/style.css?v=4"
+    >
 
 </head>
 
+
 <body>
+
+    <!-- =====================================
+         SIDEBAR
+    ====================================== -->
 
     <aside class="sidebar">
 
@@ -26,110 +34,287 @@
                 G
             </div>
 
-            <div>
-                <h1>GhossBot</h1>
-                <span>Dashboard</span>
+            <div class="logo-text">
+
+                <h1>
+                    GhossBot
+                </h1>
+
+                <span>
+                    Dashboard
+                </span>
+
             </div>
 
         </div>
 
+
         <nav>
 
-            <button class="menu active">
-                🏠 <span>Inicio</span>
-            </button>
+            <a
+                href="/dashboard.html"
+                class="menu active"
+            >
+                🏠
+                <span>
+                    Inicio
+                </span>
+            </a>
 
-            <button class="menu">
-                ⚙️ <span>Configuración</span>
-            </button>
 
-            <button class="menu">
-                👋 <span>Bienvenida</span>
-            </button>
+            <a
+                href="/dashboard.html"
+                class="menu"
+            >
+                ⚙️
+                <span>
+                    Configuración
+                </span>
+            </a>
 
-            <button class="menu">
-                🛡️ <span>Moderación</span>
-            </button>
-
-            <button class="menu">
-                💬 <span>Quotes</span>
-            </button>
-
-            <button class="menu">
-                📜 <span>Logs</span>
-            </button>
 
         </nav>
 
     </aside>
 
 
+
+    <!-- =====================================
+         CONTENIDO
+    ====================================== -->
+
     <main>
 
-        <header>
+        <header class="dashboard-header">
 
             <div>
 
-                <h2>Dashboard</h2>
+                <h2>
+                    Dashboard
+                </h2>
 
-                <p id="userText">
-                    Cargando usuario...
+                <p>
+                    Panel de control de GhossBot
                 </p>
 
             </div>
 
+
             <a
-                class="logout"
-                href="/auth/logout"
+                href="/auth/discord"
+                class="discord-login-header"
+                id="loginButton"
             >
-                Cerrar sesión
+                Iniciar sesión con Discord
             </a>
 
         </header>
 
 
-        <section class="panel">
 
-            <h3>
-                🏠 Seleccioná tu servidor
-            </h3>
+        <!-- =====================================
+             ESTADO
+        ====================================== -->
 
-            <div id="guilds">
-                Cargando servidores...
+        <section class="status-panel">
+
+            <div class="status-item">
+
+                <span class="status-label">
+                    Estado del bot
+                </span>
+
+                <span class="status-value">
+                    <span class="status-dot"></span>
+                    Online
+                </span>
+
+            </div>
+
+
+            <div class="status-item">
+
+                <span class="status-label">
+                    Servidores
+                </span>
+
+                <span
+                    class="status-value"
+                    id="serverCount"
+                >
+                    0
+                </span>
+
+            </div>
+
+
+            <div class="status-item">
+
+                <span class="status-label">
+                    Versión
+                </span>
+
+                <span class="status-value">
+                    1.0.0
+                </span>
+
             </div>
 
         </section>
 
 
-        <section class="cards">
 
-            <div class="card">
+        <!-- =====================================
+             SERVIDORES
+        ====================================== -->
 
-                <span>Estado del bot</span>
+        <section class="dashboard-section">
 
-                <strong class="online">
-                    ● Online
-                </strong>
+            <div class="section-heading">
+
+                <div>
+
+                    <h3>
+                        🖥️ Mis servidores
+                    </h3>
+
+                    <p>
+                        Servidores que podés administrar
+                        desde GhossBot.
+                    </p>
+
+                </div>
 
             </div>
 
-            <div class="card">
 
-                <span>Bot</span>
+            <div
+                id="guilds"
+                class="guilds"
+            >
 
-                <strong>
-                    GhossBot
-                </strong>
+                <div class="loading-card">
+
+                    <div class="loading-spinner"></div>
+
+                    <span>
+                        Cargando servidores...
+                    </span>
+
+                </div>
 
             </div>
 
-            <div class="card">
+        </section>
 
-                <span>Versión</span>
 
-                <strong>
-                    1.0.0
-                </strong>
+
+        <!-- =====================================
+             ACCIONES RÁPIDAS
+        ====================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h3>
+                        ⚡ Acciones rápidas
+                    </h3>
+
+                    <p>
+                        Accedé rápidamente a las funciones
+                        principales.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+
+                <a
+                    href="#"
+                    class="quick-action"
+                    onclick="return false;"
+                >
+
+                    <div class="quick-action-icon">
+                        💬
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Quotes
+                        </strong>
+
+                        <span>
+                            Activá y configurá el sistema
+                            de Quotes.
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="#"
+                    class="quick-action"
+                    onclick="return false;"
+                >
+
+                    <div class="quick-action-icon">
+                        👋
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Bienvenida
+                        </strong>
+
+                        <span>
+                            Mensajes automáticos cuando
+                            entra un usuario.
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="#"
+                    class="quick-action"
+                    onclick="return false;"
+                >
+
+                    <div class="quick-action-icon">
+                        🛡️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Moderación
+                        </strong>
+
+                        <span>
+                            Funciones de moderación
+                            del servidor.
+                        </span>
+
+                    </div>
+
+                </a>
+
 
             </div>
 
@@ -138,7 +323,7 @@
     </main>
 
 
-    <script src="/dashboard.js"></script>
+    <script src="/dashboard.js?v=4"></script>
 
 </body>
 
