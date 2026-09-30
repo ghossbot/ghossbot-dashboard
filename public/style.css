@@ -1,6 +1,5 @@
 /* ==========================================
    GHOSSBOT DASHBOARD
-   CSS GENERAL
 ========================================== */
 
 * {
@@ -9,16 +8,19 @@
     padding: 0;
 }
 
+
 html,
 body {
     min-height: 100%;
 }
 
+
 body {
     min-height: 100vh;
 
-    background: #0f0e13;
-    color: #f1f1f1;
+    background: #0d0c11;
+
+    color: #f5f5f7;
 
     font-family:
         -apple-system,
@@ -28,6 +30,12 @@ body {
         Arial,
         sans-serif;
 }
+
+
+a {
+    text-decoration: none;
+}
+
 
 button,
 input,
@@ -50,11 +58,11 @@ textarea {
 
     width: 220px;
 
-    padding: 22px 14px;
+    padding: 20px 13px;
 
     background: #111016;
 
-    border-right: 1px solid #25232c;
+    border-right: 1px solid #26242c;
 
     z-index: 100;
 
@@ -62,24 +70,23 @@ textarea {
 }
 
 
-/* ==========================================
-   LOGO
-========================================== */
+/* LOGO */
 
 .logo {
     display: flex;
     align-items: center;
 
-    gap: 11px;
+    gap: 10px;
 
-    padding: 4px 8px 25px;
+    padding: 4px 7px 25px;
 }
 
-.logo-icon {
-    width: 38px;
-    height: 38px;
 
-    flex: 0 0 38px;
+.logo-icon {
+    width: 39px;
+    height: 39px;
+
+    flex-shrink: 0;
 
     display: flex;
     align-items: center;
@@ -91,53 +98,46 @@ textarea {
 
     color: white;
 
-    font-size: 19px;
+    font-size: 18px;
+
     font-weight: 800;
 }
 
+
 .logo h1 {
-    color: #ffffff;
+    color: white;
 
     font-size: 16px;
-    line-height: 18px;
 
-    font-weight: 700;
+    line-height: 18px;
 }
+
 
 .logo span {
     display: block;
 
     margin-top: 3px;
 
-    color: #85818e;
+    color: #77737e;
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 
-/* ==========================================
-   NAVEGACIÓN
-========================================== */
+/* MENÚ */
 
 .sidebar nav {
     display: flex;
 
     flex-direction: column;
 
-    width: 100%;
-
     gap: 6px;
 }
 
 
-/* Todas las variantes de enlaces del menú */
-
-.sidebar nav a,
-.sidebar nav .menu,
-.sidebar .menu,
-.sidebar .nav-item {
+.sidebar .menu {
     width: 100%;
-    min-height: 44px;
+    min-height: 43px;
 
     display: flex;
     align-items: center;
@@ -146,58 +146,36 @@ textarea {
 
     padding: 0 12px;
 
-    border: 0;
-    border-radius: 9px;
+    border-radius: 8px;
 
-    background: transparent;
+    color: #9995a0;
 
-    color: #a7a3ad;
+    font-size: 12px;
 
-    text-decoration: none;
-
-    font-size: 13px;
     font-weight: 500;
 
-    cursor: pointer;
-
     transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
+        background .2s,
+        color .2s;
 }
 
 
-.sidebar nav a:hover,
-.sidebar nav .menu:hover,
-.sidebar .menu:hover,
-.sidebar .nav-item:hover {
-    background: #1c1a22;
+.sidebar .menu:hover {
+    background: #1c1a21;
 
-    color: #ffffff;
+    color: white;
 }
 
 
-.sidebar nav a.active,
-.sidebar nav .menu.active,
-.sidebar .menu.active,
-.sidebar .nav-item.active {
-    background: rgba(240, 32, 114, 0.12);
+.sidebar .menu.active {
+    background: rgba(240, 32, 114, .13);
 
     color: #f02072;
 }
 
 
-.sidebar nav a > span,
-.sidebar nav .menu > span,
-.sidebar .menu > span,
-.sidebar .nav-item > span {
-    display: block;
-
+.sidebar .menu span {
     white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
 }
 
 
@@ -220,199 +198,166 @@ main {
    HEADER
 ========================================== */
 
-header {
-    min-height: 55px;
+.dashboard-header {
+    min-height: 52px;
 
     display: flex;
+
     align-items: flex-start;
+
     justify-content: space-between;
 
     gap: 20px;
 
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
-header h2 {
-    color: #ffffff;
+
+.dashboard-header h2 {
+    color: white;
 
     font-size: 22px;
-    line-height: 28px;
 
-    font-weight: 700;
+    line-height: 28px;
 }
 
-header p {
+
+.dashboard-header p {
     margin-top: 3px;
 
-    color: #817d88;
+    color: #77737e;
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 
 /* ==========================================
-   LOGIN / INICIO
+   LOGIN HEADER
 ========================================== */
 
-.login-container,
-.login-page,
-.auth-container {
-    min-height: 100vh;
+.discord-login-header {
+    display: inline-flex;
 
-    display: flex;
     align-items: center;
+
     justify-content: center;
-
-    padding: 25px;
-}
-
-
-.login-box,
-.login-card,
-.auth-card {
-    width: 100%;
-    max-width: 430px;
-
-    padding: 35px;
-
-    background: #151419;
-
-    border: 1px solid #29272f;
-
-    border-radius: 14px;
-
-    text-align: center;
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.35);
-}
-
-
-.login-box h1,
-.login-card h1,
-.auth-card h1 {
-    color: #ffffff;
-
-    font-size: 24px;
-}
-
-
-.login-box p,
-.login-card p,
-.auth-card p {
-    margin-top: 9px;
-
-    color: #85818e;
-
-    font-size: 13px;
-
-    line-height: 20px;
-}
-
-
-/* ==========================================
-   BOTÓN DISCORD
-========================================== */
-
-.login-button,
-.discord-login,
-.login-discord,
-.auth-button {
-    width: 100%;
-
-    min-height: 45px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-top: 22px;
-
-    padding: 0 18px;
-
-    border: 0;
-    border-radius: 9px;
-
-    background: #5865f2;
-
-    color: #ffffff;
-
-    text-decoration: none;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
-}
-
-
-.login-button:hover,
-.discord-login:hover,
-.login-discord:hover,
-.auth-button:hover {
-    background: #4752c4;
-}
-
-
-.login-button:active,
-.discord-login:active,
-.login-discord:active,
-.auth-button:active {
-    transform: scale(0.98);
-}
-
-
-/* ==========================================
-   LOGOUT
-========================================== */
-
-.logout {
-    flex-shrink: 0;
 
     min-height: 36px;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0 14px;
 
-    padding: 0 13px;
+    border: 1px solid #35323c;
 
-    border: 1px solid #302d38;
     border-radius: 8px;
 
-    background: #15141a;
+    background: #19171e;
 
-    color: #a7a2ad;
+    color: #d9d7dd;
 
-    font-size: 12px;
+    font-size: 11px;
 
-    text-decoration: none;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition:
+        background .2s,
+        border-color .2s,
+        color .2s;
 }
 
 
-.logout:hover {
-    background: #211e27;
+.discord-login-header:hover {
+    background: #24212a;
 
-    border-color: #403b48;
+    border-color: #48434f;
 
-    color: #ffffff;
+    color: white;
 }
 
 
 /* ==========================================
-   PANELES
+   ESTADO
 ========================================== */
 
-.panel {
+.status-panel {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+
+.status-item {
+    min-height: 74px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding: 14px 16px;
+
+    background: #151419;
+
+    border: 1px solid #28262f;
+
+    border-radius: 10px;
+}
+
+
+.status-label {
+    color: #77737e;
+
+    font-size: 10px;
+}
+
+
+.status-value {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 6px;
+
+    color: #eeeeef;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #50d27c;
+
+    box-shadow:
+        0 0 7px rgba(80, 210, 124, .45);
+}
+
+
+/* ==========================================
+   SECCIONES
+========================================== */
+
+.dashboard-section {
     width: 100%;
 
     margin-bottom: 18px;
 
-    padding: 22px;
+    padding: 20px;
 
     background: #151419;
 
@@ -421,58 +366,27 @@ header p {
     border-radius: 11px;
 }
 
-.panel h3 {
-    color: #ffffff;
 
-    font-size: 15px;
-
-    font-weight: 700;
+.section-heading {
+    margin-bottom: 16px;
 }
 
-.section-description {
-    margin-top: 7px;
+
+.section-heading h3 {
+    color: white;
+
+    font-size: 14px;
+}
+
+
+.section-heading p {
+    margin-top: 5px;
 
     color: #77737e;
 
-    font-size: 12px;
-
-    line-height: 18px;
-}
-
-
-/* ==========================================
-   ESTADO DEL BOT
-========================================== */
-
-.bot-status {
-    display: inline-flex;
-    align-items: center;
-
-    padding: 4px 8px;
-
-    border-radius: 6px;
-
     font-size: 10px;
 
-    font-weight: 600;
-}
-
-.bot-status.installed {
-    background: rgba(55, 210, 110, 0.10);
-
-    color: #57d984;
-}
-
-.bot-status.not-installed {
-    background: rgba(255, 70, 90, 0.10);
-
-    color: #ff6877;
-}
-
-.bot-status.unknown {
-    background: rgba(180, 180, 190, 0.08);
-
-    color: #aaa6b0;
+    line-height: 16px;
 }
 
 
@@ -485,7 +399,7 @@ header p {
 
     flex-direction: column;
 
-    gap: 12px;
+    gap: 10px;
 }
 
 
@@ -493,18 +407,20 @@ header p {
     width: 100%;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 18px;
 
-    padding: 16px;
+    padding: 14px;
 
-    background: #151419;
+    background: #111015;
 
     border: 1px solid #29272f;
 
-    border-radius: 10px;
+    border-radius: 9px;
 }
 
 
@@ -512,9 +428,10 @@ header p {
     min-width: 0;
 
     display: flex;
+
     align-items: center;
 
-    gap: 13px;
+    gap: 12px;
 }
 
 
@@ -529,15 +446,17 @@ header p {
     border-radius: 12px;
 
     background: #211f27;
+
+    border: 1px solid #302d38;
 }
 
 
 .guild-info strong {
     display: block;
 
-    color: #f2f2f2;
+    color: white;
 
-    font-size: 14px;
+    font-size: 12px;
 
     white-space: nowrap;
 
@@ -552,12 +471,50 @@ header p {
 
     color: #77737e;
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 
 .guild-bot-status {
-    margin-top: 7px;
+    margin-top: 6px;
+}
+
+
+/* ==========================================
+   BOT STATUS
+========================================== */
+
+.bot-status {
+    display: inline-flex;
+
+    padding: 4px 7px;
+
+    border-radius: 5px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+}
+
+
+.bot-status.installed {
+    background: rgba(60, 210, 110, .1);
+
+    color: #55d77d;
+}
+
+
+.bot-status.not-installed {
+    background: rgba(255, 75, 90, .1);
+
+    color: #ff6b78;
+}
+
+
+.bot-status.unknown {
+    background: rgba(170, 170, 180, .08);
+
+    color: #aaa6b0;
 }
 
 
@@ -566,75 +523,203 @@ header p {
 ========================================== */
 
 .configure,
-.invite,
-.save-config {
+.invite {
+    min-height: 36px;
+
+    padding: 0 13px;
+
     border: 0;
 
-    border-radius: 8px;
+    border-radius: 7px;
 
-    min-height: 38px;
-
-    padding: 0 14px;
-
-    font-family: inherit;
-
-    font-size: 12px;
+    font-size: 10px;
 
     font-weight: 600;
 
     cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        background 0.15s ease;
 }
 
 
 .configure {
     background: #f02072;
 
-    color: #ffffff;
+    color: white;
 }
 
 
 .configure:hover {
-    background: #d91b64;
+    background: #d91c65;
 }
 
 
 .invite {
-    background: #29262f;
+    background: #28252e;
 
-    color: #ffffff;
+    color: white;
 }
 
 
 .invite:hover {
-    background: #36323e;
-}
-
-
-.configure:active,
-.invite:active,
-.save-config:active {
-    transform: scale(0.97);
+    background: #36323d;
 }
 
 
 /* ==========================================
-   SERVIDOR / CONFIGURACIÓN
+   QUICK ACTIONS
+========================================== */
+
+.quick-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 11px;
+}
+
+
+.quick-action {
+    min-height: 105px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    padding: 14px;
+
+    background: #111015;
+
+    border: 1px solid #29272f;
+
+    border-radius: 9px;
+
+    color: white;
+
+    transition:
+        background .2s,
+        border-color .2s,
+        transform .15s;
+}
+
+
+.quick-action:hover {
+    background: #19171e;
+
+    border-color: #403b47;
+
+    transform: translateY(-1px);
+}
+
+
+.quick-action-icon {
+    width: 35px;
+    height: 35px;
+
+    flex: 0 0 35px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #201e27;
+
+    font-size: 16px;
+}
+
+
+.quick-action strong {
+    display: block;
+
+    color: white;
+
+    font-size: 11px;
+}
+
+
+.quick-action span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #77737e;
+
+    font-size: 9px;
+
+    line-height: 14px;
+}
+
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.loading-card {
+    min-height: 90px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 1px solid #29272f;
+
+    border-radius: 9px;
+
+    background: #111015;
+
+    color: #77737e;
+
+    font-size: 11px;
+}
+
+
+.loading-spinner {
+    width: 17px;
+    height: 17px;
+
+    border: 2px solid #302d37;
+
+    border-top-color: #f02072;
+
+    border-radius: 50%;
+
+    animation:
+        spin .8s linear infinite;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* ==========================================
+   CONFIGURACIÓN
 ========================================== */
 
 .server-header {
-    padding: 20px 22px;
+    padding: 20px;
 }
 
 
 .config-page-title {
     display: flex;
+
     align-items: center;
 
-    gap: 15px;
+    gap: 14px;
 }
 
 
@@ -664,12 +749,12 @@ header p {
 
     color: #706c77;
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 
 /* ==========================================
-   TARJETAS DE CONFIGURACIÓN
+   CONFIG GRID
 ========================================== */
 
 .config-grid {
@@ -678,67 +763,67 @@ header p {
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
-    gap: 12px;
+    gap: 10px;
 
-    margin-top: 18px;
+    margin-top: 17px;
 }
 
 
 .config-card {
-    width: 100%;
-    min-height: 76px;
+    min-height: 74px;
 
     display: flex;
+
     align-items: center;
 
-    gap: 12px;
+    gap: 11px;
 
-    padding: 13px;
+    padding: 12px;
 
-    background: #131217;
-
-    border: 1px solid #28262f;
+    border: 1px solid #29272f;
 
     border-radius: 9px;
 
-    color: #ffffff;
+    background: #111015;
+
+    color: white;
 
     text-align: left;
 
-    font-family: inherit;
-
     cursor: pointer;
-
-    transition:
-        border-color 0.2s ease,
-        background 0.2s ease,
-        transform 0.15s ease;
 }
 
 
 .config-card:hover {
     background: #19171e;
 
-    border-color: #413b47;
+    border-color: #403b47;
 }
 
 
-.config-card:active {
-    transform: scale(0.99);
-}
+.config-icon {
+    width: 37px;
+    height: 37px;
 
+    flex: 0 0 37px;
 
-.config-card > div:last-child {
-    min-width: 0;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #201e27;
+
+    font-size: 16px;
 }
 
 
 .config-card strong {
     display: block;
 
-    font-size: 12px;
-
-    font-weight: 700;
+    font-size: 11px;
 }
 
 
@@ -747,32 +832,14 @@ header p {
 
     color: #706c77;
 
-    font-size: 10px;
+    font-size: 9px;
 
-    line-height: 15px;
-}
-
-
-.config-icon {
-    width: 38px;
-    height: 38px;
-
-    flex: 0 0 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 9px;
-
-    background: #201e27;
-
-    font-size: 17px;
+    line-height: 13px;
 }
 
 
 /* ==========================================
-   ÁREA DE CONFIGURACIÓN
+   CONFIG CONTENT
 ========================================== */
 
 .hidden {
@@ -780,34 +847,10 @@ header p {
 }
 
 
-#configurationArea {
-    animation: configurationIn 0.2s ease;
-}
-
-
-@keyframes configurationIn {
-
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(5px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0);
-    }
-
-}
-
-
 .setting-box {
     margin-top: 15px;
 
-    padding: 18px;
+    padding: 17px;
 
     background: #111015;
 
@@ -818,7 +861,7 @@ header p {
 
 
 .setting-box h4 {
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
@@ -827,35 +870,18 @@ header p {
 
     color: #85818c;
 
-    font-size: 11px;
-
-    line-height: 17px;
-}
-
-
-.coming-soon {
-    display: inline-flex;
-
-    margin-top: 15px;
-
-    padding: 6px 9px;
-
-    border-radius: 6px;
-
-    background: rgba(240, 32, 114, 0.08);
-
-    color: #df5e91;
-
     font-size: 10px;
+
+    line-height: 16px;
 }
 
 
 /* ==========================================
-   FORMULARIOS
+   SELECT
 ========================================== */
 
 .form-group {
-    margin-top: 18px;
+    margin-top: 16px;
 }
 
 
@@ -864,40 +890,32 @@ header p {
 
     margin-bottom: 7px;
 
-    color: #b8b4bd;
+    color: #aaa6b0;
 
-    font-size: 11px;
+    font-size: 10px;
 
     font-weight: 600;
 }
 
 
-/* ==========================================
-   SELECT
-========================================== */
-
 .config-select {
     width: 100%;
 
-    min-height: 44px;
+    min-height: 43px;
 
-    display: block;
+    padding: 0 40px 0 12px;
 
-    padding: 0 42px 0 13px;
-
-    border: 1px solid #34313c;
+    border: 1px solid #36323d;
 
     border-radius: 8px;
 
     outline: none;
 
-    background-color: #0f0e13;
+    background-color: #0d0c11;
 
-    color: #f1f1f1;
+    color: white;
 
-    font-family: inherit;
-
-    font-size: 12px;
+    font-size: 11px;
 
     cursor: pointer;
 
@@ -929,151 +947,165 @@ header p {
 }
 
 
-.config-select:hover {
-    border-color: #48434f;
-
-    background-color: #131218;
-}
-
-
 .config-select:focus {
     border-color: #f02072;
 
     box-shadow:
         0 0 0 2px
-        rgba(240, 32, 114, 0.10);
+        rgba(240, 32, 114, .1);
 }
 
 
 .config-select option {
     background: #151419;
 
-    color: #ffffff;
+    color: white;
 }
 
 
-/* ==========================================
-   GUARDAR
-========================================== */
-
 .save-config {
-    margin-top: 15px;
+    width: auto;
+
+    min-height: 39px;
+
+    margin-top: 13px;
+
+    padding: 0 14px;
+
+    border: 0;
+
+    border-radius: 7px;
 
     background: #f02072;
 
-    color: #ffffff;
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    cursor: pointer;
 }
 
 
 .save-config:hover {
-    background: #d91b64;
+    background: #d91c65;
 }
 
 
-/* ==========================================
-   ESTADOS
-========================================== */
-
 .config-status {
-    min-height: 18px;
+    min-height: 17px;
 
-    margin-top: 11px;
+    margin-top: 9px;
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 
 .config-status.success {
-    color: #57d984;
+    color: #55d77d;
 }
 
 
 .config-status.error {
-    color: #ff6877;
+    color: #ff6b78;
 }
 
 
 /* ==========================================
-   VACÍO
+   LOGIN PAGE
 ========================================== */
 
-.empty {
-    padding: 35px 20px;
+body.login-page {
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(240, 32, 114, .08),
+            transparent 35%
+        ),
+        #0d0c11;
+}
+
+
+.login-container {
+    width: 100%;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+}
+
+
+.login-card {
+    width: 100%;
+
+    max-width: 410px;
+
+    padding: 35px;
 
     background: #151419;
 
-    border: 1px solid #28262f;
+    border: 1px solid #29272f;
 
-    border-radius: 10px;
+    border-radius: 15px;
 
     text-align: center;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, .4);
 }
 
 
-.empty h3 {
-    color: #ffffff;
+.login-logo {
+    display: flex;
 
-    font-size: 15px;
+    justify-content: center;
+
+    margin-bottom: 17px;
 }
 
 
-.empty p {
-    margin-top: 7px;
+.login-logo-icon {
+    width: 60px;
+    height: 60px;
 
-    color: #77737e;
+    display: flex;
 
-    font-size: 11px;
+    align-items: center;
+    justify-content: center;
 
-    line-height: 17px;
+    border-radius: 15px;
+
+    background: #f02072;
+
+    color: white;
+
+    font-size: 28px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 10px 30px
+        rgba(240, 32, 114, .2);
 }
 
 
-/* ==========================================
-   DASHBOARD - ACCIONES RÁPIDAS
-========================================== */
+.login-card h1 {
+    color: white;
 
-.quick-actions {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 12px;
-
-    margin-top: 18px;
+    font-size: 24px;
 }
 
 
-.quick-action {
-    padding: 16px;
+.login-card > p {
+    margin-top: 9px;
 
-    background: #131217;
-
-    border: 1px solid #28262f;
-
-    border-radius: 9px;
-
-    color: #ffffff;
-
-    text-decoration: none;
-}
-
-
-.quick-action:hover {
-    background: #19171e;
-
-    border-color: #413b47;
-}
-
-
-/* ==========================================
-   TEXTOS DEL DASHBOARD
-========================================== */
-
-.dashboard-status,
-.bot-status-text,
-.stats,
-.server-count {
     color: #85818e;
 
     font-size: 12px;
@@ -1082,9 +1114,98 @@ header p {
 }
 
 
-.dashboard-status strong,
-.server-count strong {
-    color: #ffffff;
+.discord-login-button {
+    width: 100%;
+
+    min-height: 46px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 22px;
+
+    border-radius: 9px;
+
+    background: #5865f2;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    transition:
+        background .2s,
+        transform .15s;
+}
+
+
+.discord-login-button:hover {
+    background: #4752c4;
+}
+
+
+.discord-login-button:active {
+    transform: scale(.98);
+}
+
+
+.discord-icon {
+    font-size: 15px;
+}
+
+
+.login-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-top: 22px;
+
+    color: #57535f;
+
+    font-size: 9px;
+}
+
+
+/* ==========================================
+   EMPTY
+========================================== */
+
+.empty {
+    padding: 35px 20px;
+
+    background: #111015;
+
+    border: 1px solid #29272f;
+
+    border-radius: 9px;
+
+    text-align: center;
+}
+
+
+.empty h3 {
+    color: white;
+
+    font-size: 13px;
+}
+
+
+.empty p {
+    margin-top: 7px;
+
+    color: #77737e;
+
+    font-size: 10px;
 }
 
 
@@ -1111,11 +1232,6 @@ header p {
     }
 
 
-    .config-grid {
-        grid-template-columns: 1fr;
-    }
-
-
     .quick-actions {
         grid-template-columns: 1fr;
     }
@@ -1130,13 +1246,11 @@ header p {
 @media (max-width: 650px) {
 
     .sidebar {
-        position: fixed;
-
-        width: 72px;
+        width: 66px;
 
         padding:
-            15px
-            9px;
+            14px
+            8px;
     }
 
 
@@ -1144,22 +1258,22 @@ header p {
         justify-content: center;
 
         padding:
-            0
+            2px
             0
             20px;
     }
 
 
-    .logo > div:last-child {
+    .logo-text {
         display: none;
     }
 
 
     .logo-icon {
-        width: 40px;
-        height: 40px;
+        width: 39px;
+        height: 39px;
 
-        flex-basis: 40px;
+        flex-basis: 39px;
     }
 
 
@@ -1168,177 +1282,99 @@ header p {
     }
 
 
-    .sidebar nav a,
-    .sidebar nav .menu,
-    .sidebar .menu,
-    .sidebar .nav-item {
-        width: 50px;
+    .sidebar .menu {
+        width: 48px;
 
-        min-height: 46px;
+        min-height: 45px;
 
         justify-content: center;
 
         padding: 0;
 
-        font-size: 18px;
+        font-size: 17px;
     }
 
 
-    .sidebar nav a > span,
-    .sidebar nav .menu > span,
-    .sidebar .menu > span,
-    .sidebar .nav-item > span {
+    .sidebar .menu span {
         display: none;
     }
 
 
     main {
-        margin-left: 72px;
+        margin-left: 66px;
 
-        width: calc(100% - 72px);
+        width: calc(100% - 66px);
 
         padding:
-            18px
-            12px
+            16px
+            10px
             35px;
     }
 
 
-    header {
+    .dashboard-header {
         align-items: flex-start;
 
-        gap: 10px;
+        gap: 8px;
 
-        margin-bottom: 16px;
+        margin-bottom: 14px;
     }
 
 
-    header h2 {
+    .dashboard-header h2 {
         font-size: 17px;
 
         line-height: 22px;
     }
 
 
-    header p {
-        font-size: 10px;
-    }
-
-
-    .logout {
-        min-height: 32px;
-
-        padding: 0 9px;
-
+    .dashboard-header p {
         font-size: 9px;
     }
 
 
-    .panel {
-        padding: 15px;
+    .discord-login-header {
+        min-height: 31px;
 
-        margin-bottom: 12px;
+        padding: 0 8px;
 
-        border-radius: 9px;
+        font-size: 8px;
     }
 
 
-    .server-header {
-        padding: 15px;
-    }
-
-
-    .server-big-icon {
-        width: 48px;
-        height: 48px;
-
-        flex-basis: 48px;
-
-        border-radius: 11px;
-    }
-
-
-    .config-page-title {
-        gap: 11px;
-    }
-
-
-    .config-page-title h3 {
-        font-size: 13px;
-    }
-
-
-    .config-page-title p {
-        font-size: 9px;
-    }
-
-
-    .config-grid {
+    .status-panel {
         grid-template-columns: 1fr;
 
-        gap: 8px;
-
-        margin-top: 14px;
+        gap: 7px;
     }
 
 
-    .config-card {
-        min-height: 66px;
+    .status-item {
+        min-height: 57px;
 
-        padding: 10px;
+        padding: 10px 12px;
     }
 
 
-    .config-icon {
-        width: 34px;
-        height: 34px;
-
-        flex-basis: 34px;
-
-        font-size: 15px;
-    }
-
-
-    .config-card strong {
-        font-size: 11px;
-    }
-
-
-    .config-card p {
-        font-size: 9px;
-
-        line-height: 13px;
-    }
-
-
-    .setting-box {
+    .dashboard-section {
         padding: 13px;
+
+        margin-bottom: 12px;
     }
 
 
-    .setting-box h4 {
+    .section-heading {
+        margin-bottom: 12px;
+    }
+
+
+    .section-heading h3 {
         font-size: 12px;
     }
 
 
-    .setting-box > p {
-        font-size: 10px;
-    }
-
-
-    .config-select {
-        min-height: 42px;
-
-        font-size: 11px;
-    }
-
-
-    .save-config {
-        width: 100%;
-
-        min-height: 42px;
-
-        font-size: 11px;
+    .section-heading p {
+        font-size: 9px;
     }
 
 
@@ -1346,16 +1382,13 @@ header p {
         align-items: flex-start;
 
         flex-direction: column;
+
+        padding: 12px;
     }
 
 
     .guild-info {
         width: 100%;
-    }
-
-
-    .guild-info strong {
-        font-size: 12px;
     }
 
 
@@ -1365,68 +1398,92 @@ header p {
     }
 
 
-    .login-container,
-    .login-page,
-    .auth-container {
-        padding: 18px;
-    }
-
-
-    .login-box,
-    .login-card,
-    .auth-card {
-        padding: 25px 20px;
-    }
-
-
-    .login-box h1,
-    .login-card h1,
-    .auth-card h1 {
-        font-size: 21px;
-    }
-
-
     .quick-actions {
         grid-template-columns: 1fr;
+
+        gap: 8px;
+    }
+
+
+    .quick-action {
+        min-height: 76px;
+
+        padding: 11px;
+    }
+
+
+    .server-big-icon {
+        width: 48px;
+        height: 48px;
+
+        flex-basis: 48px;
+    }
+
+
+    .config-grid {
+        grid-template-columns: 1fr;
+
+        gap: 8px;
+    }
+
+
+    .config-card {
+        min-height: 65px;
+    }
+
+
+    .login-container {
+        padding: 15px;
+    }
+
+
+    .login-card {
+        padding: 28px 20px;
+    }
+
+
+    .login-card h1 {
+        font-size: 21px;
     }
 
 }
 
 
 /* ==========================================
-   CELULARES MUY PEQUEÑOS
+   CELULAR PEQUEÑO
 ========================================== */
 
 @media (max-width: 390px) {
 
     .sidebar {
-        width: 62px;
+        width: 58px;
     }
 
 
     main {
-        margin-left: 62px;
+        margin-left: 58px;
 
-        width: calc(100% - 62px);
+        width: calc(100% - 58px);
 
-        padding-left: 9px;
+        padding-left: 8px;
 
-        padding-right: 9px;
+        padding-right: 8px;
     }
 
 
-    .sidebar nav a,
-    .sidebar nav .menu,
-    .sidebar .menu,
-    .sidebar .nav-item {
-        width: 44px;
+    .sidebar .menu {
+        width: 42px;
     }
 
 
-    .logout {
-        padding: 0 7px;
+    .discord-login-header {
+        max-width: 105px;
 
-        font-size: 8px;
+        white-space: normal;
+
+        text-align: center;
+
+        line-height: 11px;
     }
 
 }
